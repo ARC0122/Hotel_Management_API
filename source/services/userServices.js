@@ -43,13 +43,18 @@ class UserServices {
 
   updateUser = async (id, data) => {
     try {
-      const updatedUserCount = await User.update(
-        { ...data },
-        { where: { UserID: id } }
-      );
-      if (updatedUserCount) {
-        const updatedUser = await User.findByPk(id);
-        return updatedUser;
+      const user = await User.findByPk(id);
+      if (user) {
+        const updatedUserCount = await User.update(
+          { ...data },
+          { where: { UserID: id } }
+        );
+        if (updatedUserCount) {
+          const updatedUser = await User.findByPk(id);
+          return updatedUser;
+        }
+      } else {
+        return "user not found";
       }
     } catch (err) {
       console.log(err);
@@ -58,8 +63,13 @@ class UserServices {
 
   deleteUser = async (id) => {
     try {
-      const user = await User.destroy({ where: { UserID: id } });
-      return user;
+      const user = await User.findByPk(id);
+      if (user) {
+        const user = await User.destroy({ where: { UserID: id } });
+        return user;
+      } else {
+        return "user not found";
+      }
     } catch (err) {
       console.log(err);
     }

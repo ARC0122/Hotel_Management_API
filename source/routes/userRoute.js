@@ -6,8 +6,8 @@ router.route("/").post(User.createUser).get(User.getAllUser);
 
 router
   .route("/:id")
-  .patch(User.getUserByID, User.updateUser)
+  .patch(User.updateUser)
   .get(User.getUserByID)
-  .delete(User.getUserByID, User.deleteUser);
+  .delete(User.deleteUser);
 
 module.exports = router;
