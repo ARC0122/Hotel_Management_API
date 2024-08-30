@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 
-const sequelize = require("../../utils/database");
-// const sequelize = require("../../models/index").sequelize;
+// const sequelize = require("../utils/database");
+const sequelize = require("../../models/index").sequelize;
 const User = require("../../models/userModel")(sequelize, DataTypes);
 
 class UserServices {
@@ -19,7 +19,7 @@ class UserServices {
       const newUser = await User.create(user);
       return newUser;
     } catch (err) {
-      console.log(err);
+      return err;
     }
   };
 
@@ -28,7 +28,7 @@ class UserServices {
       const users = await User.findAll();
       return users;
     } catch (err) {
-      console.log(err);
+      return err;
     }
   };
 
@@ -37,7 +37,7 @@ class UserServices {
       const user = await User.findByPk(id);
       return user;
     } catch (err) {
-      console.log(err);
+      return err;
     }
   };
 
@@ -57,7 +57,7 @@ class UserServices {
         return "user not found";
       }
     } catch (err) {
-      console.log(err);
+      return err;
     }
   };
 
@@ -71,7 +71,7 @@ class UserServices {
         return "user not found";
       }
     } catch (err) {
-      console.log(err);
+      return err;
     }
   };
 }

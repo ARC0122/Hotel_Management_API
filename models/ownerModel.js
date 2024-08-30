@@ -34,7 +34,11 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
     });
-    Owner.hasMany(models.Hotel);
+    Owner.hasMany(models.Hotel, {
+      foreignKey: "OwnerID",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
   };
 
   return Owner;

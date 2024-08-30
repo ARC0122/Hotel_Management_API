@@ -1,5 +1,3 @@
-const Booking = require("./bookingModel");
-
 module.exports = (sequelize, DataTypes) => {
   const Customer = sequelize.define(
     "Customer",
@@ -35,7 +33,11 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
     });
-    Customer.hasMany(models.Booking);
+    Customer.hasMany(models.Booking, {
+      foreignKey: "CustomerID",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
   };
 
   return Customer;

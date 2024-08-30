@@ -19,7 +19,7 @@ class UserController {
         res.status(200).json(result);
         next();
       } else {
-        res.status(200).json({ msg: "no user found" });
+        res.status(404).json({ msg: "no user found" });
       }
     } catch (err) {
       res.status(400).json({ error: err });

@@ -36,7 +36,11 @@ module.exports = (sequelize, DataTypes) => {
 
   //Associations
   Service.associate = function (models) {
-    Service.hasMany(models.Employee);
+    Service.hasMany(models.Employee, {
+      foreignKey: "ServiceID",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
   };
 
   return Service;

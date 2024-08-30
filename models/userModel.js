@@ -24,9 +24,21 @@ module.exports = (sequelize, DataTypes) => {
 
   // Associations
   User.associate = function (models) {
-    User.hasOne(models.Owner);
-    User.hasOne(models.Customer);
-    User.hasOne(models.Employee);
+    User.hasOne(models.Owner, {
+      foreignKey: "UserID",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
+    User.hasOne(models.Customer, {
+      foreignKey: "UserID",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
+    User.hasOne(models.Employee, {
+      foreignKey: "UserID",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+    });
   };
   return User;
 };
