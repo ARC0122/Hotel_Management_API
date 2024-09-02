@@ -1,6 +1,6 @@
 const express = require("express");
 const db = require("./models/index");
-const userRoute = require("./source/routes/userRoute");
+const userRoute = require("./routes/userRoute");
 
 const app = express();
 

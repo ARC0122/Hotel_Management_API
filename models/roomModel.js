@@ -10,30 +10,70 @@ module.exports = (sequelize, DataTypes) => {
       RoomNo: {
         type: DataTypes.STRING,
         allowNull: true,
+        validate: {
+          len: {
+            args: [1, 10],
+            msg: "RoomNo should be between 1 and 10 characters",
+          },
+        },
       },
       RoomType: {
         type: DataTypes.STRING,
         allowNull: true,
+        validate: {
+          len: {
+            args: [1, 50],
+            msg: "RoomType should be between 1 and 50 characters",
+          },
+        },
       },
       Price: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        validate: {
+          isInt: {
+            msg: "Price must be an integer",
+          },
+          min: {
+            args: [0],
+            msg: "Price cannot be negative",
+          },
+        },
       },
       Status: {
         type: DataTypes.BOOLEAN,
         allowNull: true,
-        default: 0,
+        defaultValue: 0,
       },
       HotelID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: {
+            msg: "HotelID cannot be empty",
+          },
+          isInt: {
+            msg: "HotelID must be an integer",
+          },
+        },
       },
       createdBy: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        validate: {
+          isInt: {
+            msg: "createdBy must be an integer",
+          },
+        },
       },
       updatedBy: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        validate: {
+          isInt: {
+            msg: "updatedBy must be an integer",
+          },
+        },
       },
     },
     {
@@ -43,7 +83,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   );
 
-  //Associations
+  // Associations
   Room.associate = function (models) {
     Room.belongsTo(models.Hotel, {
       foreignKey: "HotelID",

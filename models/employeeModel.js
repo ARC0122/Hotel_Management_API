@@ -9,20 +9,40 @@ module.exports = (sequelize, DataTypes) => {
       },
       UserID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "UserID cannot be empty" },
+          isInt: { msg: "UserID must be an integer" },
+        },
       },
       HotelID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "HotelID cannot be empty" },
+          isInt: { msg: "HotelID must be an integer" },
+        },
       },
       ServiceID: {
         type: DataTypes.INTEGER,
+        allowNull: true,
+        validate: {
+          isInt: { msg: "ServiceID must be an integer" },
+        },
       },
       createdBy: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        validate: {
+          isInt: { msg: "createdBy must be an integer" },
+        },
       },
       updatedBy: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        validate: {
+          isInt: { msg: "updatedBy must be an integer" },
+        },
       },
     },
     {
@@ -55,5 +75,6 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: "CASCADE",
     });
   };
+
   return Employee;
 };

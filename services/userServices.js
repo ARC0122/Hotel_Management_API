@@ -1,8 +1,8 @@
 const { DataTypes } = require("sequelize");
 
 // const sequelize = require("../utils/database");
-const sequelize = require("../../models/index").sequelize;
-const User = require("../../models/userModel")(sequelize, DataTypes);
+const sequelize = require("../models/index").sequelize;
+const User = require("../models/userModel")(sequelize, DataTypes);
 
 class UserServices {
   createUser = async (data) => {

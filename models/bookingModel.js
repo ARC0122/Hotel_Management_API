@@ -9,33 +9,66 @@ module.exports = (sequelize, DataTypes) => {
       },
       RoomID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "RoomID cannot be empty" },
+          isInt: { msg: "RoomID must be an integer" },
+        },
       },
       CustomerID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "CustomerID cannot be empty" },
+          isInt: { msg: "CustomerID must be an integer" },
+        },
       },
       BookingDate: {
         type: DataTypes.DATEONLY,
-        allowNull: true,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "BookingDate cannot be empty" },
+          isDate: { msg: "BookingDate must be a valid date" },
+        },
       },
       CheckInDate: {
         type: DataTypes.DATEONLY,
         allowNull: true,
+        validate: {
+          isDate: { msg: "CheckInDate must be a valid date" },
+        },
       },
       CheckOutDate: {
         type: DataTypes.DATEONLY,
         allowNull: true,
+        validate: {
+          isDate: { msg: "CheckOutDate must be a valid date" },
+        },
       },
       TotalPrice: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: true,
+        validate: {
+          isDecimal: { msg: "TotalPrice must be a valid decimal number" },
+          min: {
+            args: [0],
+            msg: "TotalPrice must be greater than or equal to 0",
+          },
+        },
       },
       createdBy: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        validate: {
+          isInt: { msg: "createdBy must be an integer" },
+        },
       },
       updatedBy: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        validate: {
+          isInt: { msg: "updatedBy must be an integer" },
+        },
       },
     },
     {

@@ -9,17 +9,33 @@ module.exports = (sequelize, DataTypes) => {
       },
       EmployeeID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "EmployeeID cannot be empty" },
+          isInt: { msg: "EmployeeID must be an integer" },
+        },
       },
       RoomID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: { msg: "RoomID cannot be empty" },
+          isInt: { msg: "RoomID must be an integer" },
+        },
       },
       createdBy: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        validate: {
+          isInt: { msg: "createdBy must be an integer" },
+        },
       },
       updatedBy: {
         type: DataTypes.INTEGER,
         allowNull: true,
+        validate: {
+          isInt: { msg: "updatedBy must be an integer" },
+        },
       },
     },
     {
