@@ -71,6 +71,7 @@ class UserController {
       const result = await UserServices.createUser(user);
       res.status(ERROR_CODES.CREATED).json(result);
     } catch (err) {
+      // Amitesh: use throw to show errors. do it for all places.
       res.status(ERROR_CODES.BAD_REQUEST).json({
         error: ERROR_MESSAGES.CREATE_USER_ERROR,
         details: err.message,
