@@ -71,43 +71,35 @@ class UserController {
       const result = await UserServices.createUser(user);
       res.status(ERROR_CODES.CREATED).json(result);
     } catch (err) {
-      // Amitesh: use throw to show errors. do it for all places.
-      res.status(ERROR_CODES.BAD_REQUEST).json({
-        error: ERROR_MESSAGES.CREATE_USER_ERROR,
-        details: err.message,
-      });
+      throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
+        ${err.message}`);
     }
   };
 
-  getUserByID = async (req, res, next) => {
+  getUserByID = async (req, res) => {
     try {
       const id = req.params.id;
       const result = await UserServices.getUserByID(id);
       if (result) {
         res.status(ERROR_CODES.OK).json(result);
-        next();
       } else {
         res.status(ERROR_CODES.NOT_FOUND).json({
-          error: ERROR_MESSAGES.USER_NOT_FOUND,
+          error: ERROR_MESSAGES.NOT_FOUND,
         });
       }
     } catch (err) {
-      res.status(ERROR_CODES.BAD_REQUEST).json({
-        error: ERROR_MESSAGES.GET_USER_ERROR,
-        details: err.message,
-      });
+      throw new Error(`${ERROR_MESSAGES.GET_ERROR}:${err.message}`);
     }
   };
 
   getAllUser = async (req, res) => {
     try {
-      const result = await UserServices.getAllUser();
+      const query = req.query;
+      const result = await UserServices.getAllUser(query);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
-      res.status(ERROR_CODES.BAD_REQUEST).json({
-        error: ERROR_MESSAGES.GET_USER_ERROR,
-        details: err.message,
-      });
+      throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
+       ${err.message}`);
     }
   };
 
@@ -118,10 +110,8 @@ class UserController {
       const result = await UserServices.updateUser(id, data);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
-      res.status(ERROR_CODES.BAD_REQUEST).json({
-        error: ERROR_MESSAGES.UPDATE_USER_ERROR,
-        details: err.message,
-      });
+      throw new Error(`${ERROR_MESSAGES.UPDATE_ERROR}:
+       ${err.message}`);
     }
   };
 
@@ -131,10 +121,7 @@ class UserController {
       const result = await UserServices.deleteUser(id);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
-      res.status(ERROR_CODES.BAD_REQUEST).json({
-        error: ERROR_MESSAGES.DELETE_USER_ERROR,
-        details: err.message,
-      });
+      throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);
     }
   };
 }
