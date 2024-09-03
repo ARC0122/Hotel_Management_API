@@ -9,14 +9,7 @@ const Hotel = require("../models/hotelModel")(sequelize, DataTypes);
 class HotelServices {
   getAllHotel = async () => {
     try {
-      const hotels = await Hotel.findAll({
-        include: [
-          {
-            model: Owner,
-            required: true,
-          },
-        ],
-      });
+      const hotels = await Hotel.findAll();
       return hotels;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);

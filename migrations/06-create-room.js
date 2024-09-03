@@ -33,25 +33,25 @@ module.exports = {
           model: "hotels",
           key: "HotelID",
         },
-        createdBy: {
-          type: DataTypes.INTEGER,
-        },
-        updatedBy: {
-          type: DataTypes.INTEGER,
-        },
-        createdAt: {
-          allowNull: false,
-          type: DataTypes.DATE,
-          defaultValue: DataTypes.literal("CURRENT_TIMESTAMP"),
-        },
-        updatedAt: {
-          allowNull: false,
-          type: DataTypes.DATE,
-          defaultValue: DataTypes.literal("CURRENT_TIMESTAMP"),
-        },
-        deletedAt: {
-          type: DataTypes.DATE,
-        },
+      },
+      createdBy: {
+        type: DataTypes.INTEGER,
+      },
+      updatedBy: {
+        type: DataTypes.INTEGER,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.literal("CURRENT_TIMESTAMP"),
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.literal("CURRENT_TIMESTAMP"),
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
       },
     });
   },

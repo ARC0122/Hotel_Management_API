@@ -16,11 +16,9 @@ class CustomerServices {
   };
 
   createCustomer = async (data) => {
-    const { UserID, HotelID, FacilityID } = data;
+    const { UserID } = data;
     const customer = {
       UserID,
-      HotelID,
-      FacilityID,
     };
     try {
       const newCustomer = await Customer.create(customer);

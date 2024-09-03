@@ -6,8 +6,7 @@ const ERROR_MESSAGES = require("../errorMessage");
 class OwnerController {
   createOwner = async (req, res) => {
     try {
-      const owner = req.body;
-      const result = await OwnerServices.createOwner(owner);
+      const result = await OwnerServices.createOwner(req.body);
       res.status(ERROR_CODES.CREATED).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
@@ -15,13 +14,12 @@ class OwnerController {
     }
   };
 
-  getOwnerByID = async (req, res, next) => {
+  getOwnerByID = async (req, res) => {
     try {
       const id = req.params.id;
       const result = await OwnerServices.getOwnerByID(id);
       if (result) {
         res.status(ERROR_CODES.OK).json(result);
-        next();
       } else {
         res.status(ERROR_CODES.NOT_FOUND).json({
           error: ERROR_MESSAGES.NOT_FOUND,
@@ -34,9 +32,8 @@ class OwnerController {
 
   getAllOwner = async (req, res) => {
     try {
-      const result = await OwnerServices.getAllOwner();
-      // res.status(ERROR_CODES.OK).json(result);
-      res.json(result);
+      const result = await OwnerServices.getAllOwner(req.query);
+      res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
         ${err.message}`);

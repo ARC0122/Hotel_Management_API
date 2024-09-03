@@ -10,14 +10,7 @@ const User = require("../models/userModel")(sequelize, DataTypes);
 class OwnerServices {
   getAllOwner = async () => {
     try {
-      const owners = await Owner.findAll({
-        include: [
-          {
-            model: User,
-            required: true,
-          },
-        ],
-      });
+      const owners = await Owner.findAll();
       return owners;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);

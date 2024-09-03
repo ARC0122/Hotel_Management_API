@@ -25,25 +25,25 @@ module.exports = {
           model: "rooms",
           key: "RoomID",
         },
-        createdBy: {
-          type: DataTypes.INTEGER,
-        },
-        updatedBy: {
-          type: DataTypes.INTEGER,
-        },
-        createdAt: {
-          allowNull: false,
-          type: DataTypes.DATE,
-          defaultValue: DataTypes.literal("CURRENT_TIMESTAMP"),
-        },
-        updatedAt: {
-          allowNull: false,
-          type: DataTypes.DATE,
-          defaultValue: DataTypes.literal("CURRENT_TIMESTAMP"),
-        },
-        deletedAt: {
-          type: DataTypes.DATE,
-        },
+      },
+      createdBy: {
+        type: DataTypes.INTEGER,
+      },
+      updatedBy: {
+        type: DataTypes.INTEGER,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.literal("CURRENT_TIMESTAMP"),
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.literal("CURRENT_TIMESTAMP"),
+      },
+      deletedAt: {
+        type: DataTypes.DATE,
       },
     });
   },

@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       updatedBy: {
+        type: DataTypes.INTEGER,
         validate: {
           isInt: { msg: "updatedBy must be an integer" },
         },

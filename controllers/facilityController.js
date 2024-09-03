@@ -1,12 +1,12 @@
-const UserServices = require("../services/userServices");
+const FacilityServices = require("../services/facilityServices");
 
 const ERROR_CODES = require("../statusCode");
 const ERROR_MESSAGES = require("../errorMessage");
 
-class UserController {
-  createUser = async (req, res) => {
+class FacilityController {
+  createFacility = async (req, res) => {
     try {
-      const result = await UserServices.createUser(req.body);
+      const result = await FacilityServices.createFacility(req.body);
       res.status(ERROR_CODES.CREATED).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
@@ -14,10 +14,10 @@ class UserController {
     }
   };
 
-  getUserByID = async (req, res) => {
+  getFacilityByID = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await UserServices.getUserByID(id);
+      const result = await FacilityServices.getFacilityByID(id);
       if (result) {
         res.status(ERROR_CODES.OK).json(result);
       } else {
@@ -30,9 +30,9 @@ class UserController {
     }
   };
 
-  getAllUser = async (req, res) => {
+  getAllFacility = async (req, res) => {
     try {
-      const result = await UserServices.getAllUser(req.query);
+      const result = await FacilityServices.getAllFacility(req.query);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
@@ -40,11 +40,12 @@ class UserController {
     }
   };
 
-  updateUser = async (req, res) => {
+  updateFacility = async (req, res) => {
     try {
-      const id = req.params.id;
-      const data = req.body;
-      const result = await UserServices.updateUser(id, data);
+      const result = await FacilityServices.updateFacility(
+        req.params.id,
+        req.body
+      );
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.UPDATE_ERROR}:
@@ -52,10 +53,10 @@ class UserController {
     }
   };
 
-  deleteUser = async (req, res) => {
+  deleteFacility = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await UserServices.deleteUser(id);
+      const result = await FacilityServices.deleteFacility(id);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);
@@ -63,4 +64,4 @@ class UserController {
   };
 }
 
-module.exports = new UserController();
+module.exports = new FacilityController();

@@ -28,6 +28,7 @@ class RoomServices {
       const newRoom = await Room.create(room);
       return newRoom;
     } catch (err) {
+      console.log("Service", err);
       throw new Error(`Error: ${err.message}`);
     }
   };

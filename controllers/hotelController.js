@@ -1,12 +1,12 @@
-const UserServices = require("../services/userServices");
+const HotelServices = require("../services/hotelServices");
 
 const ERROR_CODES = require("../statusCode");
 const ERROR_MESSAGES = require("../errorMessage");
 
-class UserController {
-  createUser = async (req, res) => {
+class HotelController {
+  createHotel = async (req, res) => {
     try {
-      const result = await UserServices.createUser(req.body);
+      const result = await HotelServices.createHotel(req.body);
       res.status(ERROR_CODES.CREATED).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
@@ -14,10 +14,10 @@ class UserController {
     }
   };
 
-  getUserByID = async (req, res) => {
+  getHotelByID = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await UserServices.getUserByID(id);
+      const result = await HotelServices.getHotelByID(id);
       if (result) {
         res.status(ERROR_CODES.OK).json(result);
       } else {
@@ -30,9 +30,9 @@ class UserController {
     }
   };
 
-  getAllUser = async (req, res) => {
+  getAllHotel = async (req, res) => {
     try {
-      const result = await UserServices.getAllUser(req.query);
+      const result = await HotelServices.getAllHotel(req.query);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
@@ -40,11 +40,9 @@ class UserController {
     }
   };
 
-  updateUser = async (req, res) => {
+  updateHotel = async (req, res) => {
     try {
-      const id = req.params.id;
-      const data = req.body;
-      const result = await UserServices.updateUser(id, data);
+      const result = await HotelServices.updateHotel(req.params.id, req.body);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.UPDATE_ERROR}:
@@ -52,10 +50,10 @@ class UserController {
     }
   };
 
-  deleteUser = async (req, res) => {
+  deleteHotel = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await UserServices.deleteUser(id);
+      const result = await HotelServices.deleteHotel(id);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);
@@ -63,4 +61,4 @@ class UserController {
   };
 }
 
-module.exports = new UserController();
+module.exports = new HotelController();

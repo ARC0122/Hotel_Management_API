@@ -37,11 +37,9 @@ module.exports = {
       },
       createdBy: {
         type: DataTypes.INTEGER,
-        allowNull: false,
       },
       updatedBy: {
         type: DataTypes.INTEGER,
-        allowNull: false,
       },
       createdAt: {
         allowNull: false,
