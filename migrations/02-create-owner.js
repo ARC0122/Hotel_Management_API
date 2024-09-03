@@ -11,7 +11,6 @@ module.exports = {
       UserID: {
         type: DataTypes.INTEGER,
         allowNull: false,
-
         references: {
           model: "users",
           key: "UserID",
@@ -19,7 +18,7 @@ module.exports = {
       },
       createdBy: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       updatedBy: {
         type: DataTypes.INTEGER,

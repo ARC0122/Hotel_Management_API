@@ -1,5 +1,5 @@
+//user services
 const { DataTypes } = require("sequelize");
-
 // const sequelize = require("../utils/database");
 const sequelize = require("../models/index").sequelize;
 const User = require("../models/userModel")(sequelize, DataTypes);
@@ -19,25 +19,63 @@ class UserServices {
       const newUser = await User.create(user);
       return newUser;
     } catch (err) {
-      return err;
+      throw new Error(`Error: ${err.message}`);
     }
   };
 
-  getAllUser = async () => {
+  getAllUser = async (query) => {
     try {
+      const filters = { ...query };
+
+      console.log(query);
+      // const users = await User.findAll({ where: filters });
       const users = await User.findAll();
+
       return users;
     } catch (err) {
-      return err;
+      throw new Error(`Error: ${err.message}`);
     }
   };
+  // async getAllUser(query) {
+  //   try {
+  //     // Extract filter and sort parameters from the query
+  //     const { filter, sortBy, sortOrder = "ASC" } = query;
+
+  //     // Prepare filters
+  //     const filters = {};
+  //     if (filter) {
+  //       // Assuming filter is a stringified JSON object containing field-value pairs
+  //       const parsedFilter = JSON.parse(filter);
+  //       for (const [key, value] of Object.entries(parsedFilter)) {
+  //         // Use Sequelize operators to construct the filter conditions
+  //         filters[key] = { [Op.like]: `%${value}%` }; // Example: partial match
+  //       }
+  //     }
+
+  //     // Prepare sorting
+  //     const order = sortBy
+  //       ? [[sortBy, sortOrder.toUpperCase()]]
+  //       : [["createdAt", "ASC"]];
+
+  //     // Fetch users with filtering and sorting
+  //     const users = await User.findAll({
+  //       where: filters,
+  //       order: order,
+  //     });
+
+  //     return users;
+  //   } catch (err) {
+  //     console.error("Error fetching users:", err.message);
+  //     throw new Error(`Error: ${err.message}`);
+  //   }
+  // }
 
   getUserByID = async (id) => {
     try {
       const user = await User.findByPk(id);
       return user;
     } catch (err) {
-      return err;
+      throw new Error(`Error: ${err.message}`);
     }
   };
 
@@ -57,7 +95,7 @@ class UserServices {
         return "user not found";
       }
     } catch (err) {
-      return err;
+      throw new Error(`Error: ${err.message}`);
     }
   };
 
@@ -71,7 +109,7 @@ class UserServices {
         return "user not found";
       }
     } catch (err) {
-      return err;
+      throw new Error(`Error: ${err.message}`);
     }
   };
 }
