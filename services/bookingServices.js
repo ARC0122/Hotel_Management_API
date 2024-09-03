@@ -1,14 +1,21 @@
 // booking services
 
-const { DataTypes } = require("sequelize");
-const sequelize = require("../models/index").sequelize;
-
-const Booking = require("../models/bookingModel")(sequelize, DataTypes);
+// const { DataTypes } = require("sequelize");
+// const sequelize = require("../models/index").sequelize;
+// const Booking = require("../models/bookingModel")(sequelize, DataTypes);
+const { Booking } = require("../models/index");
 
 class BookingServices {
-  getAllBooking = async () => {
+  getAllBooking = async (query) => {
     try {
-      const bookings = await Booking.findAll();
+      console.log(query);
+      const { page = 1, pageSize = 10 } = { ...query };
+
+      //pagination
+      const { offset, limit } = getPaginationOptions(page, pageSize);
+
+      const bookings = await Booking.findAll({ offset: offset, limit: limit });
+
       return bookings;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);

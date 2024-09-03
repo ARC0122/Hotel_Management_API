@@ -1,15 +1,20 @@
 // hotel services
 
-const { DataTypes } = require("sequelize");
-const sequelize = require("../models/index").sequelize;
-
-const Owner = require("../models/ownerModel")(sequelize, DataTypes);
-const Hotel = require("../models/hotelModel")(sequelize, DataTypes);
+// const { DataTypes } = require("sequelize");
+// const sequelize = require("../models/index").sequelize;
+// const Hotel = require("../models/hotelModel")(sequelize, DataTypes);
+const { Hotel } = require("../models/index");
 
 class HotelServices {
-  getAllHotel = async () => {
+  getAllHotel = async (query) => {
     try {
-      const hotels = await Hotel.findAll();
+      console.log(query);
+      const { page = 1, pageSize = 10 } = { ...query };
+
+      //pagination
+      const { offset, limit } = getPaginationOptions(page, pageSize);
+
+      const hotels = await Hotel.findAll({ offset: offset, limit: limit });
       return hotels;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);

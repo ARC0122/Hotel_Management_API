@@ -1,14 +1,23 @@
 // customer services
 
-const { DataTypes } = require("sequelize");
-const sequelize = require("../models/index").sequelize;
-
-const Customer = require("../models/customerModel")(sequelize, DataTypes);
+// const { DataTypes } = require("sequelize");
+// const sequelize = require("../models/index").sequelize;
+// const Customer = require("../models/customerModel")(sequelize, DataTypes);
+const { Customer } = require("../models/index");
 
 class CustomerServices {
-  getAllCustomer = async () => {
+  getAllCustomer = async (query) => {
     try {
-      const customers = await Customer.findAll();
+      console.log(query);
+      const { page = 1, pageSize = 10 } = { ...query };
+
+      //pagination
+      const { offset, limit } = getPaginationOptions(page, pageSize);
+
+      const customers = await Customer.findAll({
+        offset: offset,
+        limit: limit,
+      });
       return customers;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);

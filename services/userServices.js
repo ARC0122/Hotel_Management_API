@@ -1,8 +1,9 @@
 //user services
-const { DataTypes } = require("sequelize");
-// const sequelize = require("../utils/database");
-const sequelize = require("../models/index").sequelize;
-const User = require("../models/userModel")(sequelize, DataTypes);
+// const { DataTypes } = require("sequelize");
+// const sequelize = require("../models/index").sequelize;
+// const User = require("../models/userModel")(sequelize, DataTypes);
+const { User } = require("../models/index");
+const { getPaginationOptions } = require("../utils/helper");
 
 class UserServices {
   createUser = async (data) => {
@@ -25,50 +26,19 @@ class UserServices {
 
   getAllUser = async (query) => {
     try {
-      const filters = { ...query };
-
       console.log(query);
-      // const users = await User.findAll({ where: filters });
-      const users = await User.findAll();
+      const { page = 1, pageSize = 10 } = { ...query };
+
+      //pagination
+      const { offset, limit } = getPaginationOptions(page, pageSize);
+
+      const users = await User.findAll({ offset: offset, limit: limit });
 
       return users;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);
     }
   };
-  // async getAllUser(query) {
-  //   try {
-  //     // Extract filter and sort parameters from the query
-  //     const { filter, sortBy, sortOrder = "ASC" } = query;
-
-  //     // Prepare filters
-  //     const filters = {};
-  //     if (filter) {
-  //       // Assuming filter is a stringified JSON object containing field-value pairs
-  //       const parsedFilter = JSON.parse(filter);
-  //       for (const [key, value] of Object.entries(parsedFilter)) {
-  //         // Use Sequelize operators to construct the filter conditions
-  //         filters[key] = { [Op.like]: `%${value}%` }; // Example: partial match
-  //       }
-  //     }
-
-  //     // Prepare sorting
-  //     const order = sortBy
-  //       ? [[sortBy, sortOrder.toUpperCase()]]
-  //       : [["createdAt", "ASC"]];
-
-  //     // Fetch users with filtering and sorting
-  //     const users = await User.findAll({
-  //       where: filters,
-  //       order: order,
-  //     });
-
-  //     return users;
-  //   } catch (err) {
-  //     console.error("Error fetching users:", err.message);
-  //     throw new Error(`Error: ${err.message}`);
-  //   }
-  // }
 
   getUserByID = async (id) => {
     try {

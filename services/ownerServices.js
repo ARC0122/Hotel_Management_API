@@ -1,16 +1,22 @@
 //owner services
 
-const { DataTypes } = require("sequelize");
+// const { DataTypes } = require("sequelize");
 // const sequelize = require("../utils/database");
-const sequelize = require("../models/index").sequelize;
-
-const Owner = require("../models/ownerModel")(sequelize, DataTypes);
-const User = require("../models/userModel")(sequelize, DataTypes);
+// const sequelize = require("../models/index").sequelize;
+// const Owner = require("../models/ownerModel")(sequelize, DataTypes);
+// const User = require("../models/userModel")(sequelize, DataTypes);
+const { Owner } = require("../models/index");
 
 class OwnerServices {
-  getAllOwner = async () => {
+  getAllOwner = async (query) => {
     try {
-      const owners = await Owner.findAll();
+      console.log(query);
+      const { page = 1, pageSize = 10 } = { ...query };
+
+      //pagination
+      const { offset, limit } = getPaginationOptions(page, pageSize);
+
+      const owners = await Owner.findAll({ offset: offset, limit: limit });
       return owners;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);

@@ -1,14 +1,23 @@
 // employee services
 
-const { DataTypes } = require("sequelize");
-const sequelize = require("../models/index").sequelize;
-
-const Employee = require("../models/employeeModel")(sequelize, DataTypes);
+// const { DataTypes } = require("sequelize");
+// const sequelize = require("../models/index").sequelize;
+// const Employee = require("../models/employeeModel")(sequelize, DataTypes);
+const { Employee } = require("../models/index");
 
 class EmployeeServices {
-  getAllEmployee = async () => {
+  getAllEmployee = async (query) => {
     try {
-      const employees = await Employee.findAll();
+      console.log(query);
+      const { page = 1, pageSize = 10 } = { ...query };
+
+      //pagination
+      const { offset, limit } = getPaginationOptions(page, pageSize);
+
+      const employees = await Employee.findAll({
+        offset: offset,
+        limit: limit,
+      });
       return employees;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);

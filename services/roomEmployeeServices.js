@@ -1,17 +1,26 @@
 // roomEmployee services
 
-const { DataTypes } = require("sequelize");
-const sequelize = require("../models/index").sequelize;
-
-const RoomEmployee = require("../models/roomEmployeeModel")(
-  sequelize,
-  DataTypes
-);
+// const { DataTypes } = require("sequelize");
+// const sequelize = require("../models/index").sequelize;
+// const RoomEmployee = require("../models/roomEmployeeModel")(
+//   sequelize,
+//   DataTypes
+// );
+const { RoomEmployee } = require("../models/index");
 
 class RoomEmployeeServices {
-  getAllRoomEmployee = async () => {
+  getAllRoomEmployee = async (query) => {
     try {
-      const roomEmployees = await RoomEmployee.findAll();
+      console.log(query);
+      const { page = 1, pageSize = 10 } = { ...query };
+
+      //pagination
+      const { offset, limit } = getPaginationOptions(page, pageSize);
+
+      const roomEmployees = await RoomEmployee.findAll({
+        offset: offset,
+        limit: limit,
+      });
       return roomEmployees;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);

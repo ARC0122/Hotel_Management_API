@@ -1,14 +1,23 @@
 // facility services
 
-const { DataTypes } = require("sequelize");
-const sequelize = require("../models/index").sequelize;
-
-const Facility = require("../models/facilityModel")(sequelize, DataTypes);
+// const { DataTypes } = require("sequelize");
+// const sequelize = require("../models/index").sequelize;
+// const Facility = require("../models/facilityModel")(sequelize, DataTypes);
+const { Facility } = require("../models/index");
 
 class FacilityServices {
-  getAllFacility = async () => {
+  getAllFacility = async (query) => {
     try {
-      const facilities = await Facility.findAll();
+      console.log(query);
+      const { page = 1, pageSize = 10 } = { ...query };
+
+      //pagination
+      const { offset, limit } = getPaginationOptions(page, pageSize);
+
+      const facilities = await Facility.findAll({
+        offset: offset,
+        limit: limit,
+      });
       return facilities;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);

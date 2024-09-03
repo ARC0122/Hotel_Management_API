@@ -1,14 +1,20 @@
 // room services
 
-const { DataTypes } = require("sequelize");
-const sequelize = require("../models/index").sequelize;
-
-const Room = require("../models/roomModel")(sequelize, DataTypes);
+// const { DataTypes } = require("sequelize");
+// const sequelize = require("../models/index").sequelize;
+// const Room = require("../models/roomModel")(sequelize, DataTypes);
+const { Room } = require("../models/index");
 
 class RoomServices {
-  getAllRoom = async () => {
+  getAllRoom = async (query) => {
     try {
-      const rooms = await Room.findAll();
+      console.log(query);
+      const { page = 1, pageSize = 10 } = { ...query };
+
+      //pagination
+      const { offset, limit } = getPaginationOptions(page, pageSize);
+
+      const rooms = await Room.findAll({ offset: offset, limit: limit });
       return rooms;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);
