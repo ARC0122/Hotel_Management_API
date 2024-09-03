@@ -4,19 +4,24 @@
 // const sequelize = require("../models/index").sequelize;
 // const Customer = require("../models/customerModel")(sequelize, DataTypes);
 const { Customer } = require("../models/index");
+const { pagination, sorting } = require("../utils/helper");
 
 class CustomerServices {
   getAllCustomer = async (query) => {
     try {
       console.log(query);
-      const { page = 1, pageSize = 10 } = { ...query };
+      const { page, pageSize, sortedBy, sortOrder } = { ...query };
 
       //pagination
-      const { offset, limit } = getPaginationOptions(page, pageSize);
+      const { offset, limit } = pagination(page, pageSize);
+
+      //sorting
+      const order = sorting(sortedBy, sortOrder);
 
       const customers = await Customer.findAll({
         offset: offset,
         limit: limit,
+        order: order,
       });
       return customers;
     } catch (err) {

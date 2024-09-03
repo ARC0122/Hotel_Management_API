@@ -3,7 +3,7 @@
 // const sequelize = require("../models/index").sequelize;
 // const User = require("../models/userModel")(sequelize, DataTypes);
 const { User } = require("../models/index");
-const { getPaginationOptions } = require("../utils/helper");
+const { pagination, sorting } = require("../utils/helper");
 
 class UserServices {
   createUser = async (data) => {
@@ -26,17 +26,23 @@ class UserServices {
 
   getAllUser = async (query) => {
     try {
-      console.log(query);
-      const { page = 1, pageSize = 10 } = { ...query };
+      const { page, pageSize, sortedBy, sortOrder } = { ...query };
 
       //pagination
-      const { offset, limit } = getPaginationOptions(page, pageSize);
+      const { offset, limit } = pagination(page, pageSize);
 
-      const users = await User.findAll({ offset: offset, limit: limit });
+      //sorting
+      const order = sorting(sortedBy, sortOrder);
+
+      const users = await User.findAll({
+        offset: offset,
+        limit: limit,
+        order: order,
+      });
 
       return users;
     } catch (err) {
-      throw new Error(`Error: ${err.message}`);
+      throw new Error(`ErrorService: ${err.message}`);
     }
   };
 
@@ -45,7 +51,7 @@ class UserServices {
       const user = await User.findByPk(id);
       return user;
     } catch (err) {
-      throw new Error(`Error: ${err.message}`);
+      throw new Error(`ErrorService: ${err.message}`);
     }
   };
 

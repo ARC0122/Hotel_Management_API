@@ -6,17 +6,24 @@
 // const Owner = require("../models/ownerModel")(sequelize, DataTypes);
 // const User = require("../models/userModel")(sequelize, DataTypes);
 const { Owner } = require("../models/index");
+const { pagination, sorting } = require("../utils/helper");
 
 class OwnerServices {
   getAllOwner = async (query) => {
     try {
-      console.log(query);
-      const { page = 1, pageSize = 10 } = { ...query };
+      const { page, pageSize, sortedBy, sortOrder } = { ...query };
 
       //pagination
-      const { offset, limit } = getPaginationOptions(page, pageSize);
+      const { offset, limit } = pagination(page, pageSize);
 
-      const owners = await Owner.findAll({ offset: offset, limit: limit });
+      //sorting
+      const order = sorting(sortedBy, sortOrder);
+
+      const owners = await Owner.findAll({
+        offset: offset,
+        limit: limit,
+        order: order,
+      });
       return owners;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);

@@ -7,19 +7,23 @@
 //   DataTypes
 // );
 const { RoomEmployee } = require("../models/index");
+const { pagination, sorting } = require("../utils/helper");
 
 class RoomEmployeeServices {
   getAllRoomEmployee = async (query) => {
     try {
-      console.log(query);
-      const { page = 1, pageSize = 10 } = { ...query };
+      const { page, pageSize, sortedBy, sortOrder } = { ...query };
 
       //pagination
-      const { offset, limit } = getPaginationOptions(page, pageSize);
+      const { offset, limit } = pagination(page, pageSize);
+
+      //sorting
+      const order = sorting(sortedBy, sortOrder);
 
       const roomEmployees = await RoomEmployee.findAll({
         offset: offset,
         limit: limit,
+        order: order,
       });
       return roomEmployees;
     } catch (err) {

@@ -35,8 +35,10 @@ class UserController {
       const result = await UserServices.getAllUser(req.query);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
-       ${err.message}`);
+      throw new Error(
+        `${ERROR_MESSAGES.GET_ERROR}:
+       ${err.message}`
+      );
     }
   };
 

@@ -4,19 +4,24 @@
 // const sequelize = require("../models/index").sequelize;
 // const Facility = require("../models/facilityModel")(sequelize, DataTypes);
 const { Facility } = require("../models/index");
+const { pagination, sorting } = require("../utils/helper");
 
 class FacilityServices {
   getAllFacility = async (query) => {
     try {
       console.log(query);
-      const { page = 1, pageSize = 10 } = { ...query };
+      const { page, pageSize, sortedBy, sortOrder } = { ...query };
 
       //pagination
-      const { offset, limit } = getPaginationOptions(page, pageSize);
+      const { offset, limit } = pagination(page, pageSize);
+
+      //sorting
+      const order = sorting(sortedBy, sortOrder);
 
       const facilities = await Facility.findAll({
         offset: offset,
         limit: limit,
+        order: order,
       });
       return facilities;
     } catch (err) {

@@ -4,17 +4,24 @@
 // const sequelize = require("../models/index").sequelize;
 // const Booking = require("../models/bookingModel")(sequelize, DataTypes);
 const { Booking } = require("../models/index");
+const { pagination, sorting } = require("../utils/helper");
 
 class BookingServices {
   getAllBooking = async (query) => {
     try {
-      console.log(query);
-      const { page = 1, pageSize = 10 } = { ...query };
+      const { page, pageSize, sortedBy, sortOrder } = { ...query };
 
       //pagination
-      const { offset, limit } = getPaginationOptions(page, pageSize);
+      const { offset, limit } = pagination(page, pageSize);
 
-      const bookings = await Booking.findAll({ offset: offset, limit: limit });
+      //sorting
+      const order = sorting(sortedBy, sortOrder);
+
+      const bookings = await Booking.findAll({
+        offset: offset,
+        limit: limit,
+        order: order,
+      });
 
       return bookings;
     } catch (err) {

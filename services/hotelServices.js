@@ -4,17 +4,24 @@
 // const sequelize = require("../models/index").sequelize;
 // const Hotel = require("../models/hotelModel")(sequelize, DataTypes);
 const { Hotel } = require("../models/index");
+const { pagination, sorting } = require("../utils/helper");
 
 class HotelServices {
   getAllHotel = async (query) => {
     try {
-      console.log(query);
-      const { page = 1, pageSize = 10 } = { ...query };
+      const { page, pageSize, sortedBy, sortOrder } = { ...query };
 
       //pagination
-      const { offset, limit } = getPaginationOptions(page, pageSize);
+      const { offset, limit } = pagination(page, pageSize);
 
-      const hotels = await Hotel.findAll({ offset: offset, limit: limit });
+      //sorting
+      const order = sorting(sortedBy, sortOrder);
+
+      const hotels = await Hotel.findAll({
+        offset: offset,
+        limit: limit,
+        order: order,
+      });
       return hotels;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);

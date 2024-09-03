@@ -4,19 +4,24 @@
 // const sequelize = require("../models/index").sequelize;
 // const Employee = require("../models/employeeModel")(sequelize, DataTypes);
 const { Employee } = require("../models/index");
+const { pagination, sorting } = require("../utils/helper");
 
 class EmployeeServices {
   getAllEmployee = async (query) => {
     try {
       console.log(query);
-      const { page = 1, pageSize = 10 } = { ...query };
+      const { page, pageSize, sortedBy, sortOrder } = { ...query };
 
       //pagination
-      const { offset, limit } = getPaginationOptions(page, pageSize);
+      const { offset, limit } = pagination(page, pageSize);
+
+      //sorting
+      const order = sorting(sortedBy, sortOrder);
 
       const employees = await Employee.findAll({
         offset: offset,
         limit: limit,
+        order: order,
       });
       return employees;
     } catch (err) {
