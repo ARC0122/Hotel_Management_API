@@ -17,14 +17,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       createdBy: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+
         validate: {
           isInt: { msg: "createdBy must be an integer" },
         },
       },
       updatedBy: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+
         validate: {
           isInt: { msg: "updatedBy must be an integer" },
         },

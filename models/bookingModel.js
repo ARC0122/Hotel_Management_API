@@ -33,21 +33,24 @@ module.exports = (sequelize, DataTypes) => {
       },
       CheckInDate: {
         type: DataTypes.DATEONLY,
-        allowNull: true,
+        allowNull: false,
+
         validate: {
           isDate: { msg: "CheckInDate must be a valid date" },
         },
       },
       CheckOutDate: {
         type: DataTypes.DATEONLY,
-        allowNull: true,
+        allowNull: false,
+
         validate: {
           isDate: { msg: "CheckOutDate must be a valid date" },
         },
       },
       TotalPrice: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: true,
+        allowNull: false,
+
         validate: {
           isDecimal: { msg: "TotalPrice must be a valid decimal number" },
           min: {
@@ -58,14 +61,14 @@ module.exports = (sequelize, DataTypes) => {
       },
       createdBy: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+
         validate: {
           isInt: { msg: "createdBy must be an integer" },
         },
       },
       updatedBy: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+
         validate: {
           isInt: { msg: "updatedBy must be an integer" },
         },

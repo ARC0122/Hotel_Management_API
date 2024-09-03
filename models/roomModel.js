@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       RoomNo: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         validate: {
           len: {
             args: [1, 10],
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       RoomType: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         validate: {
           len: {
             args: [1, 50],
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       Price: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
         validate: {
           isInt: {
             msg: "Price must be an integer",
@@ -59,7 +59,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       createdBy: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+
         validate: {
           isInt: {
             msg: "createdBy must be an integer",
@@ -68,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       updatedBy: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+
         validate: {
           isInt: {
             msg: "updatedBy must be an integer",

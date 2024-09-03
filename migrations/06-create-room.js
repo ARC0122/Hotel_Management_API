@@ -10,15 +10,15 @@ module.exports = {
       },
       RoomNo: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       RoomType: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
       },
       Price: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
       },
       Status: {
         type: DataTypes.BOOLEAN,
@@ -27,13 +27,14 @@ module.exports = {
       },
       HotelID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+
         references: {
           model: "hotels",
           key: "HotelID",
         },
         createdBy: {
           type: DataTypes.INTEGER,
-          allowNull: false,
         },
         updatedBy: {
           type: DataTypes.INTEGER,

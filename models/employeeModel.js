@@ -23,23 +23,24 @@ module.exports = (sequelize, DataTypes) => {
           isInt: { msg: "HotelID must be an integer" },
         },
       },
-      ServiceID: {
+      FacilityID: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+        allowNull: false,
+
         validate: {
-          isInt: { msg: "ServiceID must be an integer" },
+          isInt: { msg: "FacilityID must be an integer" },
         },
       },
       createdBy: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+
         validate: {
           isInt: { msg: "createdBy must be an integer" },
         },
       },
       updatedBy: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+
         validate: {
           isInt: { msg: "updatedBy must be an integer" },
         },
@@ -64,8 +65,8 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
     });
-    Employee.belongsTo(models.Service, {
-      foreignKey: "ServiceID",
+    Employee.belongsTo(models.Facility, {
+      foreignKey: "FacilityID",
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
     });

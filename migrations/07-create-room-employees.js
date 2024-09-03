@@ -10,6 +10,8 @@ module.exports = {
       },
       EmployeeID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+
         references: {
           model: "employees",
           key: "EmployeeID",
@@ -17,13 +19,14 @@ module.exports = {
       },
       RoomID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+
         references: {
           model: "rooms",
           key: "RoomID",
         },
         createdBy: {
           type: DataTypes.INTEGER,
-          allowNull: false,
         },
         updatedBy: {
           type: DataTypes.INTEGER,

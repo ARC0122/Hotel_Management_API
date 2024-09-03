@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  const Service = sequelize.define(
-    "Service",
+  const Facility = sequelize.define(
+    "Facility",
     {
-      ServiceID: {
+      FacilityID: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       createdBy: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+
         validate: {
           isInt: {
             msg: "createdBy must be an integer",
@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       updatedBy: {
         type: DataTypes.INTEGER,
-        allowNull: true,
+
         validate: {
           isInt: {
             msg: "updatedBy must be an integer",
@@ -53,20 +53,20 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     {
-      tableName: "services",
+      tableName: "facilities",
       paranoid: true,
       timestamps: true,
     }
   );
 
   // Associations
-  Service.associate = function (models) {
-    Service.hasMany(models.Employee, {
-      foreignKey: "ServiceID",
+  Facility.associate = function (models) {
+    Facility.hasMany(models.Employee, {
+      foreignKey: "FacilityID",
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
     });
   };
 
-  return Service;
+  return Facility;
 };

@@ -10,6 +10,8 @@ module.exports = {
       },
       UserID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+
         references: {
           model: "users",
           key: "UserID",
@@ -17,16 +19,20 @@ module.exports = {
       },
       HotelID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+
         references: {
           model: "hotels",
           key: "HotelID",
         },
       },
-      ServiceID: {
+      FacilityID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+
         references: {
-          model: "services",
-          key: "ServiceID",
+          model: "facilities",
+          key: "FacilityID",
         },
       },
       createdBy: {
@@ -35,6 +41,7 @@ module.exports = {
       },
       updatedBy: {
         type: DataTypes.INTEGER,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

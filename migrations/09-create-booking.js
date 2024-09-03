@@ -10,6 +10,8 @@ module.exports = {
       },
       RoomID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+
         references: {
           model: "rooms",
           key: "RoomID",
@@ -17,6 +19,8 @@ module.exports = {
       },
       CustomerID: {
         type: DataTypes.INTEGER,
+        allowNull: false,
+
         references: {
           model: "customers",
           key: "CustomerID",
@@ -24,23 +28,22 @@ module.exports = {
       },
       BookingDate: {
         type: DataTypes.DATEONLY,
-        allowNull: true,
+        allowNull: false,
       },
       CheckInDate: {
         type: DataTypes.DATEONLY,
-        allowNull: true,
+        allowNull: false,
       },
       CheckOutDate: {
         type: DataTypes.DATEONLY,
-        allowNull: true,
+        allowNull: false,
       },
       TotalPrice: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: true,
+        allowNull: false,
       },
       createdBy: {
         type: DataTypes.INTEGER,
-        allowNull: false,
       },
       updatedBy: {
         type: DataTypes.INTEGER,
