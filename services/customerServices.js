@@ -3,7 +3,7 @@
 // const { DataTypes } = require("sequelize");
 // const sequelize = require("../models/index").sequelize;
 // const Customer = require("../models/customerModel")(sequelize, DataTypes);
-const { Customer } = require("../models/index");
+const { Customer, Sequelize } = require("../models/index");
 const { pagination, sorting } = require("../utils/helper");
 
 class CustomerServices {
@@ -44,7 +44,12 @@ class CustomerServices {
 
   getCustomerByID = async (id) => {
     try {
-      const customer = await Customer.findByPk(id);
+      const customer = await Customer.findOne({
+        where: Sequelize.literal(`BINARY CustomerID = '${id}'`),
+      });
+      if (!customer) {
+        return "customer not found";
+      }
       return customer;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);
@@ -53,7 +58,9 @@ class CustomerServices {
 
   updateCustomer = async (id, data) => {
     try {
-      const customer = await Customer.findByPk(id);
+      const customer = await Customer.findOne({
+        where: Sequelize.literal(`BINARY CustomerID = '${id}'`),
+      });
       if (customer) {
         const updatedCustomerCount = await Customer.update(
           { ...data },
@@ -73,7 +80,9 @@ class CustomerServices {
 
   deleteCustomer = async (id) => {
     try {
-      const customer = await Customer.findByPk(id);
+      const customer = await Customer.findOne({
+        where: Sequelize.literal(`BINARY CustomerID = '${id}'`),
+      });
       if (customer) {
         const customer = await Customer.destroy({ where: { CustomerID: id } });
         return customer;

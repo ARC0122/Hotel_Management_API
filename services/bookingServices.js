@@ -3,7 +3,7 @@
 // const { DataTypes } = require("sequelize");
 // const sequelize = require("../models/index").sequelize;
 // const Booking = require("../models/bookingModel")(sequelize, DataTypes);
-const { Booking } = require("../models/index");
+const { Booking, Sequelize } = require("../models/index");
 const { pagination, sorting } = require("../utils/helper");
 
 class BookingServices {
@@ -56,7 +56,12 @@ class BookingServices {
 
   getBookingByID = async (id) => {
     try {
-      const booking = await Booking.findByPk(id);
+      const booking = await Booking.findOne({
+        where: Sequelize.literal(`BINARY BookingID = '${id}'`),
+      });
+      if (!booking) {
+        return "booking not found";
+      }
       return booking;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);
@@ -65,7 +70,9 @@ class BookingServices {
 
   updateBooking = async (id, data) => {
     try {
-      const booking = await Booking.findByPk(id);
+      const booking = await Booking.findOne({
+        where: Sequelize.literal(`BINARY BookingID = '${id}'`),
+      });
       if (booking) {
         const updatedBookingCount = await Booking.update(
           { ...data },
@@ -85,7 +92,9 @@ class BookingServices {
 
   deleteBooking = async (id) => {
     try {
-      const booking = await Booking.findByPk(id);
+      const booking = await Booking.findOne({
+        where: Sequelize.literal(`BINARY BookingID = '${id}'`),
+      });
       if (booking) {
         const booking = await Booking.destroy({ where: { BookingID: id } });
         return booking;

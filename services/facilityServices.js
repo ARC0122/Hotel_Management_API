@@ -3,7 +3,7 @@
 // const { DataTypes } = require("sequelize");
 // const sequelize = require("../models/index").sequelize;
 // const Facility = require("../models/facilityModel")(sequelize, DataTypes);
-const { Facility } = require("../models/index");
+const { Facility, Sequelize } = require("../models/index");
 const { pagination, sorting } = require("../utils/helper");
 
 class FacilityServices {
@@ -46,7 +46,12 @@ class FacilityServices {
 
   getFacilityByID = async (id) => {
     try {
-      const facility = await Facility.findByPk(id);
+      const facility = await Facility.findOne({
+        where: Sequelize.literal(`BINARY FacilityID = '${id}'`),
+      });
+      if (!facility) {
+        return "facility not found";
+      }
       return facility;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);
@@ -55,7 +60,9 @@ class FacilityServices {
 
   updateFacility = async (id, data) => {
     try {
-      const facility = await Facility.findByPk(id);
+      const facility = await Facility.findOne({
+        where: Sequelize.literal(`BINARY FacilityID = '${id}'`),
+      });
       if (facility) {
         const updatedFacilityCount = await Facility.update(
           { ...data },

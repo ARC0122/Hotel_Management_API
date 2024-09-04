@@ -1,3 +1,5 @@
+const { Op } = require("sequelize");
+
 const pagination = (page = 1, pageSize = 10) => {
   const offset = (page - 1) * pageSize;
   const limit = parseInt(pageSize, 10);
@@ -16,4 +18,26 @@ function sorting(sortedBy = "createdAt", sortOrder = "ASC") {
   return [[sortedBy, sortOrder.toUpperCase()]];
 }
 
-module.exports = { pagination, sorting };
+function Search(query, searchFields) {
+  const { search = "" } = query;
+
+  if (!search) {
+    return {};
+  }
+
+  // Construct the search conditions
+  const whereConditions = searchFields.map((field) => {
+    const condition = { [field]: { [Op.like]: `%${search}%` } };
+
+    // Log the field and condition for debugging
+    console.log(`${field} ${JSON.stringify(condition[field])}`);
+
+    return condition;
+  });
+
+  return {
+    [Op.or]: whereConditions,
+  };
+}
+
+module.exports = { pagination, sorting, Search };

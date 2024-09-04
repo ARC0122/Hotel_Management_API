@@ -3,7 +3,7 @@
 // const { DataTypes } = require("sequelize");
 // const sequelize = require("../models/index").sequelize;
 // const Room = require("../models/roomModel")(sequelize, DataTypes);
-const { Room } = require("../models/index");
+const { Room, Sequelize } = require("../models/index");
 const { pagination, sorting } = require("../utils/helper");
 
 class RoomServices {
@@ -48,8 +48,12 @@ class RoomServices {
 
   getRoomByID = async (id) => {
     try {
-      const room = await Room.findByPk(id);
-      return room;
+      const room = await Room.findOne({
+        where: Sequelize.literal(`BINARY RoomID = '${id}'`),
+      });
+      if (!room) {
+        return "room not found";
+      }
     } catch (err) {
       throw new Error(`Error: ${err.message}`);
     }
@@ -57,7 +61,10 @@ class RoomServices {
 
   updateRoom = async (id, data) => {
     try {
-      const room = await Room.findByPk(id);
+      const room = await Room.findOne({
+        where: Sequelize.literal(`BINARY RoomID = '${id}'`),
+      });
+
       if (room) {
         const updatedRoomCount = await Room.update(
           { ...data },
@@ -77,7 +84,10 @@ class RoomServices {
 
   deleteRoom = async (id) => {
     try {
-      const room = await Room.findByPk(id);
+      const room = await Room.findOne({
+        where: Sequelize.literal(`BINARY RoomID = '${id}'`),
+      });
+
       if (room) {
         const room = await Room.destroy({ where: { RoomID: id } });
         return room;

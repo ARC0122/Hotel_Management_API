@@ -46,7 +46,12 @@ class EmployeeServices {
 
   getEmployeeByID = async (id) => {
     try {
-      const employee = await Employee.findByPk(id);
+      const employee = await Employee.findOne({
+        where: Sequelize.literal(`BINARY EmployeeID = '${id}'`),
+      });
+      if (!employee) {
+        return "employee not found";
+      }
       return employee;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);
@@ -55,7 +60,9 @@ class EmployeeServices {
 
   updateEmployee = async (id, data) => {
     try {
-      const employee = await Employee.findByPk(id);
+      const employee = await Employee.findOne({
+        where: Sequelize.literal(`BINARY EmployeeID = '${id}'`),
+      });
       if (employee) {
         const updatedEmployeeCount = await Employee.update(
           { ...data },
@@ -75,7 +82,9 @@ class EmployeeServices {
 
   deleteEmployee = async (id) => {
     try {
-      const employee = await Employee.findByPk(id);
+      const employee = await Employee.findOne({
+        where: Sequelize.literal(`BINARY EmployeeID = '${id}'`),
+      });
       if (employee) {
         const employee = await Employee.destroy({ where: { EmployeeID: id } });
         return employee;

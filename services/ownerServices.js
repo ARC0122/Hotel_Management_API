@@ -5,7 +5,7 @@
 // const sequelize = require("../models/index").sequelize;
 // const Owner = require("../models/ownerModel")(sequelize, DataTypes);
 // const User = require("../models/userModel")(sequelize, DataTypes);
-const { Owner } = require("../models/index");
+const { Owner, Sequelize } = require("../models/index");
 const { pagination, sorting } = require("../utils/helper");
 
 class OwnerServices {
@@ -45,7 +45,12 @@ class OwnerServices {
 
   getOwnerByID = async (id) => {
     try {
-      const owner = await Owner.findByPk(id);
+      const owner = await Owner.findOne({
+        where: Sequelize.literal(`BINARY OwnerID = '${id}'`),
+      });
+      if (!owner) {
+        return "Owner not found";
+      }
       return owner;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);
@@ -54,7 +59,9 @@ class OwnerServices {
 
   updateOwner = async (id, data) => {
     try {
-      const owner = await Owner.findByPk(id);
+      const owner = await Owner.findOne({
+        where: Sequelize.literal(`BINARY OwnerID = '${id}'`),
+      });
       if (owner) {
         const updatedOwnerCount = await Owner.update(
           { ...data },
@@ -74,7 +81,9 @@ class OwnerServices {
 
   deleteOwner = async (id) => {
     try {
-      const owner = await Owner.findByPk(id);
+      const owner = await Owner.findOne({
+        where: Sequelize.literal(`BINARY OwnerID = '${id}'`),
+      });
       if (owner) {
         const owner = await Owner.destroy({ where: { OwnerID: id } });
         return owner;

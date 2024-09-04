@@ -11,6 +11,8 @@ module.exports = {
       UserID: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        unique: true,
+
         references: {
           model: "users",
           key: "UserID",

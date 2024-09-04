@@ -3,7 +3,7 @@
 // const { DataTypes } = require("sequelize");
 // const sequelize = require("../models/index").sequelize;
 // const Hotel = require("../models/hotelModel")(sequelize, DataTypes);
-const { Hotel } = require("../models/index");
+const { Hotel, Sequelize } = require("../models/index");
 const { pagination, sorting } = require("../utils/helper");
 
 class HotelServices {
@@ -45,7 +45,12 @@ class HotelServices {
 
   getHotelByID = async (id) => {
     try {
-      const hotel = await Hotel.findByPk(id);
+      const hotel = await Hotel.findOne({
+        where: Sequelize.literal(`BINARY HotelID = '${id}'`),
+      });
+      if (!hotel) {
+        return "Hotel not found";
+      }
       return hotel;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);
@@ -54,7 +59,9 @@ class HotelServices {
 
   updateHotel = async (id, data) => {
     try {
-      const hotel = await Hotel.findByPk(id);
+      const hotel = await Hotel.findOne({
+        where: Sequelize.literal(`BINARY HotelID = '${id}'`),
+      });
       if (hotel) {
         const updatedHotelCount = await Hotel.update(
           { ...data },
@@ -74,7 +81,9 @@ class HotelServices {
 
   deleteHotel = async (id) => {
     try {
-      const hotel = await Hotel.findByPk(id);
+      const hotel = await Hotel.findOne({
+        where: Sequelize.literal(`BINARY HotelID = '${id}'`),
+      });
       if (hotel) {
         const hotel = await Hotel.destroy({ where: { HotelID: id } });
         return hotel;

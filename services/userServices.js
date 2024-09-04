@@ -2,8 +2,8 @@
 // const { DataTypes } = require("sequelize");
 // const sequelize = require("../models/index").sequelize;
 // const User = require("../models/userModel")(sequelize, DataTypes);
-const { User } = require("../models/index");
-const { pagination, sorting } = require("../utils/helper");
+const { User, Sequelize } = require("../models/index");
+const { pagination, sorting, Search } = require("../utils/helper");
 
 class UserServices {
   createUser = async (data) => {
@@ -34,10 +34,17 @@ class UserServices {
       //sorting
       const order = sorting(sortedBy, sortOrder);
 
+      //search
+      const searchFields = ["FName", "LName", "Email", "Mobile", "Gender"];
+      const where = {
+        ...Search(query, searchFields),
+      };
+      console.log("where", where);
       const users = await User.findAll({
         offset: offset,
         limit: limit,
         order: order,
+        where: where,
       });
 
       return users;
@@ -48,8 +55,12 @@ class UserServices {
 
   getUserByID = async (id) => {
     try {
-      const user = await User.findByPk(id);
-      return user;
+      const user = await User.findOne({
+        where: Sequelize.literal(`BINARY UserID = '${id}'`), // Simulates findByPk with strict comparison
+      });
+      if (!user) {
+        return "User not found";
+      }
     } catch (err) {
       throw new Error(`ErrorService: ${err.message}`);
     }
@@ -57,7 +68,9 @@ class UserServices {
 
   updateUser = async (id, data) => {
     try {
-      const user = await User.findByPk(id);
+      const user = await User.findOne({
+        where: Sequelize.literal(`BINARY UserID = '${id}'`), // Simulates findByPk with strict comparison
+      });
       if (user) {
         const updatedUserCount = await User.update(
           { ...data },
@@ -77,7 +90,9 @@ class UserServices {
 
   deleteUser = async (id) => {
     try {
-      const user = await User.findByPk(id);
+      const user = await User.findOne({
+        where: Sequelize.literal(`BINARY UserID = '${id}'`), // Simulates findByPk with strict comparison
+      });
       if (user) {
         const user = await User.destroy({ where: { UserID: id } });
         return user;

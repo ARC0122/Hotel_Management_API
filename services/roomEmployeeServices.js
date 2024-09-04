@@ -6,7 +6,7 @@
 //   sequelize,
 //   DataTypes
 // );
-const { RoomEmployee } = require("../models/index");
+const { RoomEmployee, Sequelize } = require("../models/index");
 const { pagination, sorting } = require("../utils/helper");
 
 class RoomEmployeeServices {
@@ -47,7 +47,12 @@ class RoomEmployeeServices {
 
   getRoomEmployeeByID = async (id) => {
     try {
-      const roomEmployee = await RoomEmployee.findByPk(id);
+      const roomEmployee = await RoomEmployee.findOne({
+        where: Sequelize.literal(`BINARY RoomEmployeeID = '${id}'`),
+      });
+      if (!roomEmployee) {
+        return "roomEmployee not found";
+      }
       return roomEmployee;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);
@@ -56,7 +61,9 @@ class RoomEmployeeServices {
 
   updateRoomEmployee = async (id, data) => {
     try {
-      const roomEmployee = await RoomEmployee.findByPk(id);
+      const roomEmployee = await RoomEmployee.findOne({
+        where: Sequelize.literal(`BINARY RoomEmployeeID = '${id}'`),
+      });
       if (roomEmployee) {
         const updatedRoomEmployeeCount = await RoomEmployee.update(
           { ...data },
@@ -76,7 +83,9 @@ class RoomEmployeeServices {
 
   deleteRoomEmployee = async (id) => {
     try {
-      const roomEmployee = await RoomEmployee.findByPk(id);
+      const roomEmployee = await RoomEmployee.findOne({
+        where: Sequelize.literal(`BINARY RoomEmployeeID = '${id}'`),
+      });
       if (roomEmployee) {
         const roomEmployee = await RoomEmployee.destroy({
           where: { RoomEmployeeID: id },
