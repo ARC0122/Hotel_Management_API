@@ -6,7 +6,7 @@
 // const Owner = require("../models/ownerModel")(sequelize, DataTypes);
 // const User = require("../models/userModel")(sequelize, DataTypes);
 const { Owner, Sequelize } = require("../models/index");
-const { pagination, sorting } = require("../utils/helper");
+const { pagination, sorting, Search } = require("../utils/helper");
 
 class OwnerServices {
   getAllOwner = async (query) => {
@@ -19,10 +19,17 @@ class OwnerServices {
       //sorting
       const order = sorting(sortedBy, sortOrder);
 
+      //search
+      const searchFields = ["UserID"];
+      const where = {
+        ...Search(query, searchFields),
+      };
+
       const owners = await Owner.findAll({
         offset: offset,
         limit: limit,
         order: order,
+        where: where,
       });
       return owners;
     } catch (err) {

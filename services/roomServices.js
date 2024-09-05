@@ -4,7 +4,7 @@
 // const sequelize = require("../models/index").sequelize;
 // const Room = require("../models/roomModel")(sequelize, DataTypes);
 const { Room, Sequelize } = require("../models/index");
-const { pagination, sorting } = require("../utils/helper");
+const { pagination, sorting, Search } = require("../utils/helper");
 
 class RoomServices {
   getAllRoom = async (query) => {
@@ -17,10 +17,17 @@ class RoomServices {
       //sorting
       const order = sorting(sortedBy, sortOrder);
 
+      //search
+      const searchFields = ["RoomNo", "RoomType", "Price", "Status", "HotelID"];
+      const where = {
+        ...Search(query, searchFields),
+      };
+
       const rooms = await Room.findAll({
         offset: offset,
         limit: limit,
         order: order,
+        where: where,
       });
       return rooms;
     } catch (err) {
@@ -54,6 +61,7 @@ class RoomServices {
       if (!room) {
         return "room not found";
       }
+      return room;
     } catch (err) {
       throw new Error(`Error: ${err.message}`);
     }

@@ -39,7 +39,7 @@ class UserServices {
       const where = {
         ...Search(query, searchFields),
       };
-      console.log("where", where);
+      // console.log("where", where);
       const users = await User.findAll({
         offset: offset,
         limit: limit,
@@ -56,11 +56,12 @@ class UserServices {
   getUserByID = async (id) => {
     try {
       const user = await User.findOne({
-        where: Sequelize.literal(`BINARY UserID = '${id}'`), // Simulates findByPk with strict comparison
+        where: Sequelize.literal(`BINARY UserID = '${id}'`),
       });
       if (!user) {
         return "User not found";
       }
+      return user;
     } catch (err) {
       throw new Error(`ErrorService: ${err.message}`);
     }

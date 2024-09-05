@@ -18,6 +18,7 @@ class UserController {
     try {
       const id = req.params.id;
       const result = await UserServices.getUserByID(id);
+
       if (result) {
         res.status(ERROR_CODES.OK).json(result);
       } else {

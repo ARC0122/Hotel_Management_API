@@ -3,8 +3,8 @@
 // const { DataTypes } = require("sequelize");
 // const sequelize = require("../models/index").sequelize;
 // const Employee = require("../models/employeeModel")(sequelize, DataTypes);
-const { Employee } = require("../models/index");
-const { pagination, sorting } = require("../utils/helper");
+const { Employee, Sequelize } = require("../models/index");
+const { pagination, sorting, Search } = require("../utils/helper");
 
 class EmployeeServices {
   getAllEmployee = async (query) => {
@@ -18,10 +18,17 @@ class EmployeeServices {
       //sorting
       const order = sorting(sortedBy, sortOrder);
 
+      //search
+      const searchFields = ["UserID", "HotelID", "FacilityID"];
+      const where = {
+        ...Search(query, searchFields),
+      };
+
       const employees = await Employee.findAll({
         offset: offset,
         limit: limit,
         order: order,
+        where: where,
       });
       return employees;
     } catch (err) {

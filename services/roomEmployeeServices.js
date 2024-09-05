@@ -7,7 +7,7 @@
 //   DataTypes
 // );
 const { RoomEmployee, Sequelize } = require("../models/index");
-const { pagination, sorting } = require("../utils/helper");
+const { pagination, sorting, Search } = require("../utils/helper");
 
 class RoomEmployeeServices {
   getAllRoomEmployee = async (query) => {
@@ -20,10 +20,17 @@ class RoomEmployeeServices {
       //sorting
       const order = sorting(sortedBy, sortOrder);
 
+      //search
+      const searchFields = ["EmployeeID", "RoomID"];
+      const where = {
+        ...Search(query, searchFields),
+      };
+
       const roomEmployees = await RoomEmployee.findAll({
         offset: offset,
         limit: limit,
         order: order,
+        where: where,
       });
       return roomEmployees;
     } catch (err) {

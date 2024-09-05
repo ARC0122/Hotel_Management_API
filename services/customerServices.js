@@ -4,7 +4,7 @@
 // const sequelize = require("../models/index").sequelize;
 // const Customer = require("../models/customerModel")(sequelize, DataTypes);
 const { Customer, Sequelize } = require("../models/index");
-const { pagination, sorting } = require("../utils/helper");
+const { pagination, sorting, Search } = require("../utils/helper");
 
 class CustomerServices {
   getAllCustomer = async (query) => {
@@ -18,10 +18,17 @@ class CustomerServices {
       //sorting
       const order = sorting(sortedBy, sortOrder);
 
+      //search
+      const searchFields = ["UserID"];
+      const where = {
+        ...Search(query, searchFields),
+      };
+
       const customers = await Customer.findAll({
         offset: offset,
         limit: limit,
         order: order,
+        where: where,
       });
       return customers;
     } catch (err) {

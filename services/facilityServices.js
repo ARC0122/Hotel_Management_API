@@ -4,7 +4,7 @@
 // const sequelize = require("../models/index").sequelize;
 // const Facility = require("../models/facilityModel")(sequelize, DataTypes);
 const { Facility, Sequelize } = require("../models/index");
-const { pagination, sorting } = require("../utils/helper");
+const { pagination, sorting, Search } = require("../utils/helper");
 
 class FacilityServices {
   getAllFacility = async (query) => {
@@ -18,10 +18,17 @@ class FacilityServices {
       //sorting
       const order = sorting(sortedBy, sortOrder);
 
+      //search
+      const searchFields = ["Name", "Description", "Price"];
+      const where = {
+        ...Search(query, searchFields),
+      };
+
       const facilities = await Facility.findAll({
         offset: offset,
         limit: limit,
         order: order,
+        where: where,
       });
       return facilities;
     } catch (err) {

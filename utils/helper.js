@@ -25,7 +25,6 @@ function Search(query, searchFields) {
     return {};
   }
 
-  // Construct the search conditions
   const whereConditions = searchFields.map((field) => {
     const condition = { [field]: { [Op.like]: `%${search}%` } };
 
