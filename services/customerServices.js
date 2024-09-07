@@ -1,105 +1,106 @@
 // customer services
 
-// const { DataTypes } = require("sequelize");
-// const sequelize = require("../models/index").sequelize;
-// const Customer = require("../models/customerModel")(sequelize, DataTypes);
-const { Customer, Sequelize } = require("../models/index");
-const { pagination, sorting, Search } = require("../utils/helper");
+const { Customer } = require("../models/index");
+const BaseServices = require("./baseServices");
 
-class CustomerServices {
-  getAllCustomer = async (query) => {
-    try {
-      console.log(query);
-      const { page, pageSize, sortedBy, sortOrder } = { ...query };
+const CustomerServices = new BaseServices(Customer, "CustomerID", ["UserID"]);
 
-      //pagination
-      const { offset, limit } = pagination(page, pageSize);
+module.exports = CustomerServices;
 
-      //sorting
-      const order = sorting(sortedBy, sortOrder);
+// class CustomerServices {
+//   getAllCustomer = async (query) => {
+//     try {
+//       console.log(query);
+//       const { page, pageSize, sortedBy, sortOrder } = { ...query };
 
-      //search
-      const searchFields = ["UserID"];
-      const where = {
-        ...Search(query, searchFields),
-      };
+//       //pagination
+//       const { offset, limit } = pagination(page, pageSize);
 
-      const customers = await Customer.findAll({
-        offset: offset,
-        limit: limit,
-        order: order,
-        where: where,
-      });
-      return customers;
-    } catch (err) {
-      throw new Error(`Error: ${err.message}`);
-    }
-  };
+//       //sorting
+//       const order = sorting(sortedBy, sortOrder);
 
-  createCustomer = async (data) => {
-    const { UserID } = data;
-    const customer = {
-      UserID,
-    };
-    try {
-      const newCustomer = await Customer.create(customer);
-      return newCustomer;
-    } catch (err) {
-      throw new Error(`Error: ${err.message}`);
-    }
-  };
+//       //search
+//       const searchFields = ["UserID"];
+//       const where = {
+//         ...Search(query, searchFields),
+//       };
 
-  getCustomerByID = async (id) => {
-    try {
-      const customer = await Customer.findOne({
-        where: Sequelize.literal(`BINARY CustomerID = '${id}'`),
-      });
-      if (!customer) {
-        return "customer not found";
-      }
-      return customer;
-    } catch (err) {
-      throw new Error(`Error: ${err.message}`);
-    }
-  };
+//       const customers = await Customer.findAll({
+//         offset: offset,
+//         limit: limit,
+//         order: order,
+//         where: where,
+//       });
+//       return customers;
+//     } catch (err) {
+//       throw new Error(`Error: ${err.message}`);
+//     }
+//   };
 
-  updateCustomer = async (id, data) => {
-    try {
-      const customer = await Customer.findOne({
-        where: Sequelize.literal(`BINARY CustomerID = '${id}'`),
-      });
-      if (customer) {
-        const updatedCustomerCount = await Customer.update(
-          { ...data },
-          { where: { CustomerID: id } }
-        );
-        if (updatedCustomerCount) {
-          const updatedCustomer = await Customer.findByPk(id);
-          return updatedCustomer;
-        }
-      } else {
-        return "customer not found";
-      }
-    } catch (err) {
-      throw new Error(`Error: ${err.message}`);
-    }
-  };
+//   createCustomer = async (data) => {
+//     const { UserID } = data;
+//     const customer = {
+//       UserID,
+//     };
+//     try {
+//       const newCustomer = await Customer.create(customer);
+//       return newCustomer;
+//     } catch (err) {
+//       throw new Error(`Error: ${err.message}`);
+//     }
+//   };
 
-  deleteCustomer = async (id) => {
-    try {
-      const customer = await Customer.findOne({
-        where: Sequelize.literal(`BINARY CustomerID = '${id}'`),
-      });
-      if (customer) {
-        const customer = await Customer.destroy({ where: { CustomerID: id } });
-        return customer;
-      } else {
-        return "customer not found";
-      }
-    } catch (err) {
-      throw new Error(`Error: ${err.message}`);
-    }
-  };
-}
+//   getCustomerByID = async (id) => {
+//     try {
+//       const customer = await Customer.findOne({
+//         where: Sequelize.literal(`BINARY CustomerID = '${id}'`),
+//       });
+//       if (!customer) {
+//         return "customer not found";
+//       }
+//       return customer;
+//     } catch (err) {
+//       throw new Error(`Error: ${err.message}`);
+//     }
+//   };
 
-module.exports = new CustomerServices();
+//   updateCustomer = async (id, data) => {
+//     try {
+//       const customer = await Customer.findOne({
+//         where: Sequelize.literal(`BINARY CustomerID = '${id}'`),
+//       });
+//       if (customer) {
+//         const updatedCustomerCount = await Customer.update(
+//           { ...data },
+//           { where: { CustomerID: id } }
+//         );
+//         if (updatedCustomerCount) {
+//           const updatedCustomer = await Customer.findByPk(id);
+//           return updatedCustomer;
+//         }
+//       } else {
+//         return "customer not found";
+//       }
+//     } catch (err) {
+//       throw new Error(`Error: ${err.message}`);
+//     }
+//   };
+
+//   deleteCustomer = async (id) => {
+//     try {
+//       const customer = await Customer.findOne({
+//         where: Sequelize.literal(`BINARY CustomerID = '${id}'`),
+//       });
+//       if (customer) {
+//         const customer = await Customer.destroy({ where: { CustomerID: id } });
+//         return customer;
+//       } else {
+//         return "customer not found";
+//       }
+//     } catch (err) {
+//       throw new Error(`Error: ${err.message}`);
+//     }
+//   };
+// }
+
+// module.exports = new CustomerServices();

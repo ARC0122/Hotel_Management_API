@@ -1,4 +1,8 @@
 const express = require("express");
+
+//env config
+require("dotenv").config();
+
 const db = require("./models/index");
 const userRoute = require("./routes/userRoute");
 const ownerRoute = require("./routes/ownerRoute");

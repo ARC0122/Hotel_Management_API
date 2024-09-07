@@ -6,7 +6,7 @@ const ERROR_MESSAGES = require("../errorMessage");
 class FacilityController {
   createFacility = async (req, res) => {
     try {
-      const result = await FacilityServices.createFacility(req.body);
+      const result = await FacilityServices.createEntry(req.body);
       res.status(ERROR_CODES.CREATED).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
@@ -17,7 +17,7 @@ class FacilityController {
   getFacilityByID = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await FacilityServices.getFacilityByID(id);
+      const result = await FacilityServices.getEntryByID(id);
       if (result) {
         res.status(ERROR_CODES.OK).json(result);
       } else {
@@ -32,7 +32,7 @@ class FacilityController {
 
   getAllFacility = async (req, res) => {
     try {
-      const result = await FacilityServices.getAllFacility(req.query);
+      const result = await FacilityServices.getAllEntry(req.query);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
@@ -42,7 +42,7 @@ class FacilityController {
 
   updateFacility = async (req, res) => {
     try {
-      const result = await FacilityServices.updateFacility(
+      const result = await FacilityServices.updateEntry(
         req.params.id,
         req.body
       );
@@ -56,7 +56,7 @@ class FacilityController {
   deleteFacility = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await FacilityServices.deleteFacility(id);
+      const result = await FacilityServices.deleteEntry(id);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);

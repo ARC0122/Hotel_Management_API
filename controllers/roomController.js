@@ -6,7 +6,7 @@ const ERROR_MESSAGES = require("../errorMessage");
 class RoomController {
   createRoom = async (req, res) => {
     try {
-      const result = await RoomServices.createRoom(req.body);
+      const result = await RoomServices.createEntry(req.body);
       res.status(ERROR_CODES.CREATED).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
@@ -17,7 +17,7 @@ class RoomController {
   getRoomByID = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await RoomServices.getRoomByID(id);
+      const result = await RoomServices.getEntryByID(id);
       if (result) {
         res.status(ERROR_CODES.OK).json(result);
       } else {
@@ -32,7 +32,7 @@ class RoomController {
 
   getAllRoom = async (req, res) => {
     try {
-      const result = await RoomServices.getAllRoom(req.query);
+      const result = await RoomServices.getAllEntry(req.query);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
@@ -44,7 +44,7 @@ class RoomController {
     try {
       const id = req.params.id;
       const data = req.body;
-      const result = await RoomServices.updateRoom(id, data);
+      const result = await RoomServices.updateEntry(id, data);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.UPDATE_ERROR}:
@@ -55,7 +55,7 @@ class RoomController {
   deleteRoom = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await RoomServices.deleteRoom(id);
+      const result = await RoomServices.deleteEntry(id);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);

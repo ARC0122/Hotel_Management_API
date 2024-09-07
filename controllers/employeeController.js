@@ -6,7 +6,7 @@ const ERROR_MESSAGES = require("../errorMessage");
 class EmployeeController {
   createEmployee = async (req, res) => {
     try {
-      const result = await EmployeeServices.createEmployee(req.body);
+      const result = await EmployeeServices.createEntry(req.body);
       res.status(ERROR_CODES.CREATED).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
@@ -17,7 +17,7 @@ class EmployeeController {
   getEmployeeByID = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await EmployeeServices.getEmployeeByID(id);
+      const result = await EmployeeServices.getEntryByID(id);
       if (result) {
         res.status(ERROR_CODES.OK).json(result);
       } else {
@@ -32,7 +32,7 @@ class EmployeeController {
 
   getAllEmployee = async (req, res) => {
     try {
-      const result = await EmployeeServices.getAllEmployee(req.query);
+      const result = await EmployeeServices.getAllEntry(req.query);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
@@ -42,7 +42,7 @@ class EmployeeController {
 
   updateEmployee = async (req, res) => {
     try {
-      const result = await EmployeeServices.updateEmployee(
+      const result = await EmployeeServices.updateEntry(
         req.params.id,
         req.body
       );
@@ -56,7 +56,7 @@ class EmployeeController {
   deleteEmployee = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await EmployeeServices.deleteEmployee(id);
+      const result = await EmployeeServices.deleteEntry(id);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);

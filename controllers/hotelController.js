@@ -6,7 +6,7 @@ const ERROR_MESSAGES = require("../errorMessage");
 class HotelController {
   createHotel = async (req, res) => {
     try {
-      const result = await HotelServices.createHotel(req.body);
+      const result = await HotelServices.createEntry(req.body);
       res.status(ERROR_CODES.CREATED).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
@@ -17,7 +17,7 @@ class HotelController {
   getHotelByID = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await HotelServices.getHotelByID(id);
+      const result = await HotelServices.getEntryByID(id);
       if (result) {
         res.status(ERROR_CODES.OK).json(result);
       } else {
@@ -32,7 +32,7 @@ class HotelController {
 
   getAllHotel = async (req, res) => {
     try {
-      const result = await HotelServices.getAllHotel(req.query);
+      const result = await HotelServices.getAllEntry(req.query);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
@@ -42,7 +42,7 @@ class HotelController {
 
   updateHotel = async (req, res) => {
     try {
-      const result = await HotelServices.updateHotel(req.params.id, req.body);
+      const result = await HotelServices.updateEntry(req.params.id, req.body);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.UPDATE_ERROR}:
@@ -53,7 +53,7 @@ class HotelController {
   deleteHotel = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await HotelServices.deleteHotel(id);
+      const result = await HotelServices.deleteEntry(id);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);

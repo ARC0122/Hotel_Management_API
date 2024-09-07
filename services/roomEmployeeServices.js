@@ -1,110 +1,110 @@
 // roomEmployee services
 
-// const { DataTypes } = require("sequelize");
-// const sequelize = require("../models/index").sequelize;
-// const RoomEmployee = require("../models/roomEmployeeModel")(
-//   sequelize,
-//   DataTypes
-// );
-const { RoomEmployee, Sequelize } = require("../models/index");
-const { pagination, sorting, Search } = require("../utils/helper");
+const { RoomEmployee } = require("../models/index");
+const BaseServices = require("./baseServices");
 
-class RoomEmployeeServices {
-  getAllRoomEmployee = async (query) => {
-    try {
-      const { page, pageSize, sortedBy, sortOrder } = { ...query };
+const RoomEmployeeServices = new BaseServices(RoomEmployee, "RoomEmployeeID", [
+  "EmployeeID",
+  "RoomID",
+]);
+module.exports = RoomEmployeeServices;
 
-      //pagination
-      const { offset, limit } = pagination(page, pageSize);
+// class RoomEmployeeServices {
+//   getAllRoomEmployee = async (query) => {
+//     try {
+//       const { page, pageSize, sortedBy, sortOrder } = { ...query };
 
-      //sorting
-      const order = sorting(sortedBy, sortOrder);
+//       //pagination
+//       const { offset, limit } = pagination(page, pageSize);
 
-      //search
-      const searchFields = ["EmployeeID", "RoomID"];
-      const where = {
-        ...Search(query, searchFields),
-      };
+//       //sorting
+//       const order = sorting(sortedBy, sortOrder);
 
-      const roomEmployees = await RoomEmployee.findAll({
-        offset: offset,
-        limit: limit,
-        order: order,
-        where: where,
-      });
-      return roomEmployees;
-    } catch (err) {
-      throw new Error(`Error: ${err.message}`);
-    }
-  };
+//       //search
+//       const searchFields = ["EmployeeID", "RoomID"];
+//       const where = {
+//         ...Search(query, searchFields),
+//       };
 
-  createRoomEmployee = async (data) => {
-    const { EmployeeID, RoomID } = data;
-    const roomEmployee = {
-      EmployeeID,
-      RoomID,
-    };
-    try {
-      const newRoomEmployee = await RoomEmployee.create(roomEmployee);
-      return newRoomEmployee;
-    } catch (err) {
-      throw new Error(`Error: ${err.message}`);
-    }
-  };
+//       const roomEmployees = await RoomEmployee.findAll({
+//         offset: offset,
+//         limit: limit,
+//         order: order,
+//         where: where,
+//       });
+//       return roomEmployees;
+//     } catch (err) {
+//       throw new Error(`Error: ${err.message}`);
+//     }
+//   };
 
-  getRoomEmployeeByID = async (id) => {
-    try {
-      const roomEmployee = await RoomEmployee.findOne({
-        where: Sequelize.literal(`BINARY RoomEmployeeID = '${id}'`),
-      });
-      if (!roomEmployee) {
-        return "roomEmployee not found";
-      }
-      return roomEmployee;
-    } catch (err) {
-      throw new Error(`Error: ${err.message}`);
-    }
-  };
+//   createRoomEmployee = async (data) => {
+//     const { EmployeeID, RoomID } = data;
+//     const roomEmployee = {
+//       EmployeeID,
+//       RoomID,
+//     };
+//     try {
+//       const newRoomEmployee = await RoomEmployee.create(roomEmployee);
+//       return newRoomEmployee;
+//     } catch (err) {
+//       throw new Error(`Error: ${err.message}`);
+//     }
+//   };
 
-  updateRoomEmployee = async (id, data) => {
-    try {
-      const roomEmployee = await RoomEmployee.findOne({
-        where: Sequelize.literal(`BINARY RoomEmployeeID = '${id}'`),
-      });
-      if (roomEmployee) {
-        const updatedRoomEmployeeCount = await RoomEmployee.update(
-          { ...data },
-          { where: { RoomEmployeeID: id } }
-        );
-        if (updatedRoomEmployeeCount) {
-          const updatedRoomEmployee = await RoomEmployee.findByPk(id);
-          return updatedRoomEmployee;
-        }
-      } else {
-        return "roomEmployee not found";
-      }
-    } catch (err) {
-      throw new Error(`Error: ${err.message}`);
-    }
-  };
+//   getRoomEmployeeByID = async (id) => {
+//     try {
+//       const roomEmployee = await RoomEmployee.findOne({
+//         where: Sequelize.literal(`BINARY RoomEmployeeID = '${id}'`),
+//       });
+//       if (!roomEmployee) {
+//         return "roomEmployee not found";
+//       }
+//       return roomEmployee;
+//     } catch (err) {
+//       throw new Error(`Error: ${err.message}`);
+//     }
+//   };
 
-  deleteRoomEmployee = async (id) => {
-    try {
-      const roomEmployee = await RoomEmployee.findOne({
-        where: Sequelize.literal(`BINARY RoomEmployeeID = '${id}'`),
-      });
-      if (roomEmployee) {
-        const roomEmployee = await RoomEmployee.destroy({
-          where: { RoomEmployeeID: id },
-        });
-        return roomEmployee;
-      } else {
-        return "roomEmployee not found";
-      }
-    } catch (err) {
-      throw new Error(`Error: ${err.message}`);
-    }
-  };
-}
+//   updateRoomEmployee = async (id, data) => {
+//     try {
+//       const roomEmployee = await RoomEmployee.findOne({
+//         where: Sequelize.literal(`BINARY RoomEmployeeID = '${id}'`),
+//       });
+//       if (roomEmployee) {
+//         const updatedRoomEmployeeCount = await RoomEmployee.update(
+//           { ...data },
+//           { where: { RoomEmployeeID: id } }
+//         );
+//         if (updatedRoomEmployeeCount) {
+//           const updatedRoomEmployee = await RoomEmployee.findByPk(id);
+//           return updatedRoomEmployee;
+//         }
+//       } else {
+//         return "roomEmployee not found";
+//       }
+//     } catch (err) {
+//       throw new Error(`Error: ${err.message}`);
+//     }
+//   };
 
-module.exports = new RoomEmployeeServices();
+//   deleteRoomEmployee = async (id) => {
+//     try {
+//       const roomEmployee = await RoomEmployee.findOne({
+//         where: Sequelize.literal(`BINARY RoomEmployeeID = '${id}'`),
+//       });
+//       if (roomEmployee) {
+//         const roomEmployee = await RoomEmployee.destroy({
+//           where: { RoomEmployeeID: id },
+//         });
+//         return roomEmployee;
+//       } else {
+//         return "roomEmployee not found";
+//       }
+//     } catch (err) {
+//       throw new Error(`Error: ${err.message}`);
+//     }
+//   };
+// }
+
+// module.exports = new RoomEmployeeServices();

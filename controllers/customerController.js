@@ -6,7 +6,7 @@ const ERROR_MESSAGES = require("../errorMessage");
 class CustomerController {
   createCustomer = async (req, res) => {
     try {
-      const result = await CustomerServices.createCustomer(req.body);
+      const result = await CustomerServices.createEntry(req.body);
       res.status(ERROR_CODES.CREATED).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
@@ -17,7 +17,7 @@ class CustomerController {
   getCustomerByID = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await CustomerServices.getCustomerByID(id);
+      const result = await CustomerServices.getEntryByID(id);
       if (result) {
         res.status(ERROR_CODES.OK).json(result);
       } else {
@@ -32,7 +32,7 @@ class CustomerController {
 
   getAllCustomer = async (req, res) => {
     try {
-      const result = await CustomerServices.getAllCustomer(req.query);
+      const result = await CustomerServices.getAllEntry(req.query);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
@@ -42,7 +42,7 @@ class CustomerController {
 
   updateCustomer = async (req, res) => {
     try {
-      const result = await CustomerServices.updateCustomer(
+      const result = await CustomerServices.updateEntry(
         req.params.id,
         req.body
       );
@@ -56,7 +56,7 @@ class CustomerController {
   deleteCustomer = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await CustomerServices.deleteCustomer(id);
+      const result = await CustomerServices.deleteEntry(id);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);

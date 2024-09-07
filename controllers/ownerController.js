@@ -6,7 +6,7 @@ const ERROR_MESSAGES = require("../errorMessage");
 class OwnerController {
   createOwner = async (req, res) => {
     try {
-      const result = await OwnerServices.createOwner(req.body);
+      const result = await OwnerServices.createEntry(req.body);
       res.status(ERROR_CODES.CREATED).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
@@ -17,7 +17,7 @@ class OwnerController {
   getOwnerByID = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await OwnerServices.getOwnerByID(id);
+      const result = await OwnerServices.getEntryByID(id);
       if (result) {
         res.status(ERROR_CODES.OK).json(result);
       } else {
@@ -32,7 +32,7 @@ class OwnerController {
 
   getAllOwner = async (req, res) => {
     try {
-      const result = await OwnerServices.getAllOwner(req.query);
+      const result = await OwnerServices.getAllEntry(req.query);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
@@ -44,7 +44,7 @@ class OwnerController {
     try {
       const id = req.params.id;
       const data = req.body;
-      const result = await OwnerServices.updateOwner(id, data);
+      const result = await OwnerServices.updateEntry(id, data);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.UPDATE_ERROR}:
@@ -55,7 +55,7 @@ class OwnerController {
   deleteOwner = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await OwnerServices.deleteOwner(id);
+      const result = await OwnerServices.deleteEntry(id);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);

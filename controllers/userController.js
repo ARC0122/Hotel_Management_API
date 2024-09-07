@@ -6,7 +6,7 @@ const ERROR_MESSAGES = require("../errorMessage");
 class UserController {
   createUser = async (req, res) => {
     try {
-      const result = await UserServices.createUser(req.body);
+      const result = await UserServices.createEntry(req.body);
       res.status(ERROR_CODES.CREATED).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
@@ -17,7 +17,7 @@ class UserController {
   getUserByID = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await UserServices.getUserByID(id);
+      const result = await UserServices.getEntryByID(id);
 
       if (result) {
         res.status(ERROR_CODES.OK).json(result);
@@ -33,7 +33,7 @@ class UserController {
 
   getAllUser = async (req, res) => {
     try {
-      const result = await UserServices.getAllUser(req.query);
+      const result = await UserServices.getAllEntry(req.query);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(
@@ -47,7 +47,7 @@ class UserController {
     try {
       const id = req.params.id;
       const data = req.body;
-      const result = await UserServices.updateUser(id, data);
+      const result = await UserServices.updateEntry(id, data);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.UPDATE_ERROR}:
@@ -58,7 +58,7 @@ class UserController {
   deleteUser = async (req, res) => {
     try {
       const id = req.params.id;
-      const result = await UserServices.deleteUser(id);
+      const result = await UserServices.deleteEntry(id);
       res.status(ERROR_CODES.OK).json(result);
     } catch (err) {
       throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);
