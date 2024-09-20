@@ -1,64 +1,61 @@
 const RoomServices = require("../services/roomServices");
 
-const ERROR_CODES = require("../statusCode");
-const ERROR_MESSAGES = require("../errorMessage");
+const res_CODE = require("../statusCode");
+const res_MESSAGES = require("../errorMessage");
 
 class RoomController {
-  createRoom = async (req, res) => {
+  createRoom = async (req, res, next) => {
     try {
       const result = await RoomServices.createEntry(req.body);
-      res.status(ERROR_CODES.CREATED).json(result);
+      res.status(res_CODE.CREATED).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
-        ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  getRoomByID = async (req, res) => {
+  getRoomByID = async (req, res, next) => {
     try {
       const id = req.params.id;
       const result = await RoomServices.getEntryByID(id);
       if (result) {
-        res.status(ERROR_CODES.OK).json(result);
+        res.status(res_CODE.OK).json(result);
       } else {
-        res.status(ERROR_CODES.NOT_FOUND).json({
-          error: ERROR_MESSAGES.NOT_FOUND,
+        res.status(res_CODE.NOT_FOUND).json({
+          error: res_MESSAGES.NOT_FOUND,
         });
       }
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.GET_ERROR}:${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  getAllRoom = async (req, res) => {
+  getAllRoom = async (req, res, next) => {
     try {
       const result = await RoomServices.getAllEntry(req.query);
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
-       ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  updateRoom = async (req, res) => {
+  updateRoom = async (req, res, next) => {
     try {
       const id = req.params.id;
       const data = req.body;
       const result = await RoomServices.updateEntry(id, data);
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.UPDATE_ERROR}:
-       ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  deleteRoom = async (req, res) => {
+  deleteRoom = async (req, res, next) => {
     try {
       const id = req.params.id;
       const result = await RoomServices.deleteEntry(id);
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 }

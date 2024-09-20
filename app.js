@@ -13,6 +13,7 @@ const roomRoute = require("./routes/roomRoute");
 const roomEmployeeRoute = require("./routes/roomEmployeeRoute");
 const customerRoute = require("./routes/customerRoute");
 const bookingRoute = require("./routes/bookingRoute");
+const globalErrorHandeler = require("./controllers/error.controller");
 
 const app = express();
 
@@ -30,8 +31,10 @@ app.use("/api/roomEmployees", roomEmployeeRoute);
 app.use("/api/customers", customerRoute);
 app.use("/api/bookings", bookingRoute);
 
+app.use(globalErrorHandeler);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, function (err) {
-  if (err) console.log(err);
+  if (err) throw new Error("Error", err);
+
   console.log("Server listening on PORT", PORT);
 });

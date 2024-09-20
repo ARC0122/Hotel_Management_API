@@ -1,65 +1,62 @@
 const RoomEmployeeServices = require("../services/roomEmployeeServices");
 
-const ERROR_CODES = require("../statusCode");
-const ERROR_MESSAGES = require("../errorMessage");
+const res_CODE = require("../statusCode");
+const res_MESSAGES = require("../errorMessage");
 
 class RoomEmployeeController {
-  createRoomEmployee = async (req, res) => {
+  createRoomEmployee = async (req, res, next) => {
     try {
       const result = await RoomEmployeeServices.createEntry(req.body);
-      res.status(ERROR_CODES.CREATED).json(result);
+      res.status(res_CODE.CREATED).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
-        ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  getRoomEmployeeByID = async (req, res) => {
+  getRoomEmployeeByID = async (req, res, next) => {
     try {
       const id = req.params.id;
       const result = await RoomEmployeeServices.getEntryByID(id);
       if (result) {
-        res.status(ERROR_CODES.OK).json(result);
+        res.status(res_CODE.OK).json(result);
       } else {
-        res.status(ERROR_CODES.NOT_FOUND).json({
-          error: ERROR_MESSAGES.NOT_FOUND,
+        res.status(res_CODE.NOT_FOUND).json({
+          error: res_MESSAGES.NOT_FOUND,
         });
       }
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.GET_ERROR}:${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  getAllRoomEmployee = async (req, res) => {
+  getAllRoomEmployee = async (req, res, next) => {
     try {
       const result = await RoomEmployeeServices.getAllEntry(req.query);
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
-       ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  updateRoomEmployee = async (req, res) => {
+  updateRoomEmployee = async (req, res, next) => {
     try {
       const result = await RoomEmployeeServices.updateEntry(
         req.params.id,
         req.body
       );
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.UPDATE_ERROR}:
-       ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  deleteRoomEmployee = async (req, res) => {
+  deleteRoomEmployee = async (req, res, next) => {
     try {
       const id = req.params.id;
       const result = await RoomEmployeeServices.deleteEntry(id);
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 }

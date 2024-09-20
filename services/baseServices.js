@@ -17,21 +17,21 @@ class BaseServices {
         entry[field] = data[field];
       }
     });
-    console.log(entry);
+
     try {
       const newEntry = await this.Model.create(entry);
       return newEntry;
     } catch (err) {
-      throw new Error(`Error: ${err.message}`);
+      throw new Error(` ${err.message}`);
     }
   };
 
   getAllEntry = async (query) => {
     try {
-      const { page, pageSize, sortedBy, sortOrder } = { ...query };
+      const { pageNo, pageSize, sortedBy, sortOrder } = { ...query };
 
       //pagination
-      const { offset, limit } = pagination(page, pageSize);
+      const { offset, limit, page } = pagination(pageNo, pageSize);
 
       //sorting
       const order = sorting(sortedBy, sortOrder);
@@ -41,17 +41,17 @@ class BaseServices {
       const where = {
         ...Search(query, searchFields),
       };
-      // console.log("where", where);
-      const entries = await this.Model.findAll({
+
+      const { rows: entries, count } = await this.Model.findAndCountAll({
         offset: offset,
         limit: limit,
         order: order,
         where: where,
       });
 
-      return entries;
+      return { length: count, pageNo: page, limit, entries };
     } catch (err) {
-      throw new Error(`ErrorService: ${err.message}`);
+      throw new Error(`${err.message}`);
     }
   };
 
@@ -65,7 +65,7 @@ class BaseServices {
       }
       return entry;
     } catch (err) {
-      throw new Error(`ErrorService: ${err.message}`);
+      throw new Error(`${err.message}`);
     }
   };
 
@@ -89,7 +89,7 @@ class BaseServices {
         return `${this.Model.name} not found`;
       }
     } catch (err) {
-      throw new Error(`Error: ${err.message}`);
+      throw new Error(`${err.message}`);
     }
   };
 
@@ -107,7 +107,7 @@ class BaseServices {
         return `${this.Model.name} not found`;
       }
     } catch (err) {
-      throw new Error(`Error: ${err.message}`);
+      throw new Error(` ${err.message}`);
     }
   };
 }

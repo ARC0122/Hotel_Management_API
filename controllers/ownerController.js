@@ -1,64 +1,61 @@
 const OwnerServices = require("../services/ownerServices");
 
-const ERROR_CODES = require("../statusCode");
-const ERROR_MESSAGES = require("../errorMessage");
+const res_CODE = require("../statusCode");
+const res_MESSAGES = require("../errorMessage");
 
 class OwnerController {
-  createOwner = async (req, res) => {
+  createOwner = async (req, res, next) => {
     try {
       const result = await OwnerServices.createEntry(req.body);
-      res.status(ERROR_CODES.CREATED).json(result);
+      res.status(res_CODE.CREATED).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
-        ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  getOwnerByID = async (req, res) => {
+  getOwnerByID = async (req, res, next) => {
     try {
       const id = req.params.id;
       const result = await OwnerServices.getEntryByID(id);
       if (result) {
-        res.status(ERROR_CODES.OK).json(result);
+        res.status(res_CODE.OK).json(result);
       } else {
-        res.status(ERROR_CODES.NOT_FOUND).json({
-          error: ERROR_MESSAGES.NOT_FOUND,
+        res.status(res_CODE.NOT_FOUND).json({
+          error: res_MESSAGES.NOT_FOUND,
         });
       }
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.GET_ERROR}:${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  getAllOwner = async (req, res) => {
+  getAllOwner = async (req, res, next) => {
     try {
       const result = await OwnerServices.getAllEntry(req.query);
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
-        ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  updateOwner = async (req, res) => {
+  updateOwner = async (req, res, next) => {
     try {
       const id = req.params.id;
       const data = req.body;
       const result = await OwnerServices.updateEntry(id, data);
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.UPDATE_ERROR}:
-        ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  deleteOwner = async (req, res) => {
+  deleteOwner = async (req, res, next) => {
     try {
       const id = req.params.id;
       const result = await OwnerServices.deleteEntry(id);
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 }

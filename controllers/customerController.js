@@ -1,65 +1,62 @@
 const CustomerServices = require("../services/customerServices");
 
-const ERROR_CODES = require("../statusCode");
-const ERROR_MESSAGES = require("../errorMessage");
+const res_CODE = require("../statusCode");
+const res_MESSAGES = require("../errorMessage");
 
 class CustomerController {
-  createCustomer = async (req, res) => {
+  createCustomer = async (req, res, next) => {
     try {
       const result = await CustomerServices.createEntry(req.body);
-      res.status(ERROR_CODES.CREATED).json(result);
+      res.status(res_CODE.CREATED).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
-        ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  getCustomerByID = async (req, res) => {
+  getCustomerByID = async (req, res, next) => {
     try {
       const id = req.params.id;
       const result = await CustomerServices.getEntryByID(id);
       if (result) {
-        res.status(ERROR_CODES.OK).json(result);
+        res.status(res_CODE.OK).json(result);
       } else {
-        res.status(ERROR_CODES.NOT_FOUND).json({
-          error: ERROR_MESSAGES.NOT_FOUND,
+        res.status(res_CODE.NOT_FOUND).json({
+          error: res_MESSAGES.NOT_FOUND,
         });
       }
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.GET_ERROR}:${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  getAllCustomer = async (req, res) => {
+  getAllCustomer = async (req, res, next) => {
     try {
       const result = await CustomerServices.getAllEntry(req.query);
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.GET_ERROR}:
-       ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  updateCustomer = async (req, res) => {
+  updateCustomer = async (req, res, next) => {
     try {
       const result = await CustomerServices.updateEntry(
         req.params.id,
         req.body
       );
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.UPDATE_ERROR}:
-       ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  deleteCustomer = async (req, res) => {
+  deleteCustomer = async (req, res, next) => {
     try {
       const id = req.params.id;
       const result = await CustomerServices.deleteEntry(id);
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 }

@@ -1,67 +1,64 @@
 const UserServices = require("../services/userServices");
 
-const ERROR_CODES = require("../statusCode");
-const ERROR_MESSAGES = require("../errorMessage");
+const res_CODE = require("../statusCode");
+const res_MESSAGES = require("../errorMessage");
+const AppError = require("../utils/AppError");
 
 class UserController {
-  createUser = async (req, res) => {
+  createUser = async (req, res, next) => {
     try {
       const result = await UserServices.createEntry(req.body);
-      res.status(ERROR_CODES.CREATED).json(result);
+      res.status(res_CODE.CREATED).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.CREATE_ERROR}:
-        ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  getUserByID = async (req, res) => {
+  getUserByID = async (req, res, next) => {
     try {
       const id = req.params.id;
       const result = await UserServices.getEntryByID(id);
 
       if (result) {
-        res.status(ERROR_CODES.OK).json(result);
+        res.status(res_CODE.OK).json(result);
       } else {
-        res.status(ERROR_CODES.NOT_FOUND).json({
-          error: ERROR_MESSAGES.NOT_FOUND,
+        res.status(res_CODE.NOT_FOUND).json({
+          error: res_MESSAGES.NOT_FOUND,
         });
       }
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.GET_ERROR}:${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  getAllUser = async (req, res) => {
+  getAllUser = async (req, res, next) => {
     try {
+      console.log(req.query);
       const result = await UserServices.getAllEntry(req.query);
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(
-        `${ERROR_MESSAGES.GET_ERROR}:
-       ${err.message}`
-      );
+      next(new AppError(err.message, 400));
     }
   };
 
-  updateUser = async (req, res) => {
+  updateUser = async (req, res, next) => {
     try {
       const id = req.params.id;
       const data = req.body;
       const result = await UserServices.updateEntry(id, data);
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.UPDATE_ERROR}:
-       ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 
-  deleteUser = async (req, res) => {
+  deleteUser = async (req, res, next) => {
     try {
       const id = req.params.id;
       const result = await UserServices.deleteEntry(id);
-      res.status(ERROR_CODES.OK).json(result);
+      res.status(res_CODE.OK).json(result);
     } catch (err) {
-      throw new Error(`${ERROR_MESSAGES.DELETE_ERROR}: ${err.message}`);
+      next(new AppError(err.message, 400));
     }
   };
 }
